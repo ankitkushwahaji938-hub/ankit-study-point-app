@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="theme-color" content="#0d1117"/>
+  <meta name="description" content="Ankit Study Point – D Pharma & B Pharma Notes, Study Tools, Pharmacy Education"/>
+  <meta name="keywords" content="D Pharma Notes, B Pharma Notes, Pharmacy Tools, Pharmacology, Pharmaceutics"/>
+  <meta name="author" content="Ankit Kushwaha"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Ankit Study Point"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
+  <link rel="icon" type="image/png" href="icons/icon-192.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <title>Ankit Study Point</title>
+<style>
+:root{
+  --p:#1e88e5;--p2:#1565c0;--accent:#00e5a0;--accent2:#00bcd4;
+  --bg:#0d1117;--bg2:#161b22;--bg3:#1c2333;--surface:#21262d;
+  --border:#30363d;--text:#e6edf3;--muted:#8b949e;
+  --shadow:0 8px 32px rgba(0,0,0,.5);
+  --nav-h:62px;--hdr-h:58px;
+  --fn:'Nunito',sans-serif;--fh:'Poppins',sans-serif;
+  --ease:cubic-bezier(0.4,0,0.2,1);
+}
+[data-theme="light"]{
+  --bg:#f0f4f8;--bg2:#ffffff;--bg3:#e8f0fe;--surface:#ffffff;
+  --border:#e2e8f0;--text:#1a202c;--muted:#718096;
+  --shadow:0 4px 20px rgba(10,61,98,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;font-family:var(--fn);background:var(--bg);color:var(--text);overflow:hidden;transition:background .3s,color .3s;}
+
+/* SPLASH */
+#splash{
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(145deg,#0d1117 0%,#0a3d62 55%,#00b894 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .7s var(--ease),transform .7s var(--ease);
+}
+#splash.hide{opacity:0;transform:scale(1.06);pointer-events:none;}
+.sp-logo{
+  width:110px;height:110px;background:rgba(255,255,255,.1);
+  border:2px solid rgba(255,255,255,.18);border-radius:30px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:28px;box-shadow:0 12px 40px rgba(0,0,0,.4);
+  animation:popIn .8s cubic-bezier(0.34,1.56,0.64,1) .2s both;overflow:hidden;
+}
+.sp-logo img{width:90px;height:90px;object-fit:contain;border-radius:22px;}
+.sp-title{font-family:var(--fh);font-size:28px;font-weight:700;color:#fff;animation:fadeUp .6s ease .5s both;}
+.sp-sub{font-size:13px;color:rgba(255,255,255,.65);margin-top:6px;animation:fadeUp .6s ease .65s both;}
+.sp-bar{margin-top:52px;width:200px;height:3px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden;animation:fadeUp .5s ease .8s both;}
+.sp-fill{height:100%;width:0;background:linear-gradient(90deg,#00e5a0,#00bcd4);border-radius:3px;animation:fill 2.2s ease 1s forwards;}
+@keyframes popIn{from{opacity:0;transform:scale(.4);}to{opacity:1;transform:scale(1);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fill{to{width:100%;}}
+
+/* APP SHELL */
+#app{position:fixed;inset:0;display:flex;flex-direction:column;opacity:0;transition:opacity .5s ease;}
+#app.ready{opacity:1;}
+
+/* HEADER */
+#hdr{
+  height:var(--hdr-h);
+  background:linear-gradient(135deg,#0a3d62,#1565c0);
+  display:flex;align-items:center;padding:0 14px;gap:10px;
+  box-shadow:0 2px 16px rgba(0,0,0,.35);
+  position:relative;z-index:200;flex-shrink:0;
+}
+.hdr-logo{
+  width:38px;height:38px;background:rgba(255,255,255,.12);
+  border-radius:11px;border:1px solid rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;
+}
+.hdr-logo img{width:30px;height:30px;object-fit:contain;border-radius:6px;}
+.hdr-info{flex:1;}
+.hdr-name{font-family:var(--fh);font-size:15px;font-weight:700;color:#fff;line-height:1.2;}
+.hdr-sub{font-size:10px;color:rgba(255,255,255,.65);}
+.hdr-btn{
+  width:38px;height:38px;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.14);border-radius:11px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:#fff;flex-shrink:0;transition:background .2s,transform .15s;
+}
+.hdr-btn:active{transform:scale(.9);}
+.hdr-btn svg{width:19px;height:19px;}
+
+/* PROGRESS */
+#pbar{
+  height:2.5px;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  position:absolute;top:var(--hdr-h);left:0;width:0%;z-index:199;
+  transition:width .25s ease;box-shadow:0 0 8px rgba(0,229,160,.6);
+}
+#pbar.on{animation:pb 1.6s ease infinite;}
+@keyframes pb{0%{width:8%;}60%{width:75%;}100%{width:88%;}}
+
+/* CONTENT */
+#content{flex:1;overflow:hidden;position:relative;}
+#webview{
+  width:100%;height:100%;border:none;display:block;
+  background:var(--bg);opacity:0;transition:opacity .35s ease;
+}
+#webview.loaded{opacity:1;}
+
+/* OFFLINE */
+#offline{
+  position:absolute;inset:0;background:var(--bg);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;padding:32px;text-align:center;z-index:50;
+}
+#offline.show{display:flex;}
+.of-icon{font-size:68px;animation:pulse 2s ease infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.of-title{font-family:var(--fh);font-size:22px;font-weight:700;}
+.of-sub{font-size:14px;color:var(--muted);line-height:1.7;max-width:280px;}
+.of-btn{
+  padding:13px 32px;background:linear-gradient(135deg,#0a3d62,#00b894);
+  color:#fff;border:none;border-radius:14px;
+  font-family:var(--fn);font-size:15px;font-weight:800;cursor:pointer;margin-top:8px;
+  box-shadow:0 6px 20px rgba(0,184,148,.3);transition:transform .2s;
+}
+.of-btn:active{transform:translateY(2px);}
+
+/* BOTTOM NAV */
+#nav{
+  height:var(--nav-h);background:var(--bg2);border-top:1px solid var(--border);
+  display:flex;align-items:stretch;box-shadow:0 -4px 24px rgba(0,0,0,.15);
+  flex-shrink:0;position:relative;z-index:200;
+}
+#nav-ind{
+  position:absolute;top:0;left:0;height:2.5px;width:20%;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:0 0 3px 3px;box-shadow:0 0 10px rgba(0,229,160,.5);
+  transition:left .35s cubic-bezier(0.34,1.2,0.64,1);
+}
+.nb{
+  flex:1;border:none;background:transparent;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;cursor:pointer;color:var(--muted);
+  font-family:var(--fn);font-size:10px;font-weight:700;letter-spacing:.3px;
+  transition:color .25s,transform .2s;
+}
+.nb.active{color:var(--accent);}
+.nb:active{transform:scale(.88);}
+.nb svg{width:22px;height:22px;transition:transform .3s cubic-bezier(0.34,1.56,0.64,1);}
+.nb.active svg{transform:translateY(-2px) scale(1.1);}
+
+/* INSTALL BANNER */
+#ibanner{
+  position:fixed;bottom:calc(var(--nav-h) + 10px);left:12px;right:12px;
+  background:linear-gradient(135deg,#0a3d62,#1565c0);
+  border-radius:18px;padding:14px;display:none;align-items:center;gap:12px;
+  box-shadow:0 10px 36px rgba(10,61,98,.45);z-index:300;
+  border:1px solid rgba(255,255,255,.1);
+  animation:slideUp .45s cubic-bezier(0.34,1.4,0.64,1);
+}
+#ibanner.show{display:flex;}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+.ib-icon{font-size:30px;flex-shrink:0;}
+.ib-txt{flex:1;}
+.ib-txt strong{display:block;color:#fff;font-size:14px;font-weight:800;}
+.ib-txt span{color:rgba(255,255,255,.7);font-size:12px;}
+.ib-install{
+  padding:9px 16px;background:var(--accent);color:#0d1117;
+  border:none;border-radius:10px;font-family:var(--fn);font-size:13px;font-weight:800;
+  cursor:pointer;flex-shrink:0;
+}
+.ib-x{
+  width:28px;height:28px;background:rgba(255,255,255,.12);border:none;
+  border-radius:8px;color:#fff;cursor:pointer;font-size:14px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+
+/* TOAST */
+#toast{
+  position:fixed;bottom:calc(var(--nav-h) + 18px);left:50%;
+  transform:translateX(-50%) translateY(16px);
+  background:var(--surface);color:var(--text);border:1px solid var(--border);
+  padding:10px 22px;border-radius:12px;font-size:13px;font-weight:700;
+  opacity:0;pointer-events:none;white-space:nowrap;
+  transition:all .3s var(--ease);z-index:400;box-shadow:var(--shadow);
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* PAGE TRANSITION */
+#ptrans{
+  position:absolute;inset:0;background:var(--bg);
+  z-index:100;opacity:0;pointer-events:none;transition:opacity .2s ease;
+}
+#ptrans.on{opacity:1;pointer-events:all;}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="sp-logo">
+    <img src="icons/icon-192.png" alt="ASP" onerror="this.style.fontSize='50px';this.textContent='📚';this.style.display='block'"/>
+  </div>
+  <div class="sp-title">Ankit Study Point</div>
+  <div class="sp-sub">🎓 Learn • Prepare • Succeed</div>
+  <div class="sp-bar"><div class="sp-fill"></div></div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <!-- Header -->
+  <div id="hdr">
+    <div class="hdr-logo">
+      <img src="icons/icon-192.png" alt="ASP" onerror="this.style.display='none'"/>
+    </div>
+    <div class="hdr-info">
+      <div class="hdr-name">Ankit Study Point</div>
+      <div class="hdr-sub">Pharmacy Education Hub</div>
+    </div>
+    <button class="hdr-btn" onclick="toggleTheme()" id="themeBtn" title="Theme Toggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor" opacity=".7"/>
+      </svg>
+    </button>
+    <button class="hdr-btn" onclick="refreshPage()" title="Refresh">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="23 4 23 10 17 10"/>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Progress Bar -->
+  <div id="pbar"></div>
+
+  <!-- Content -->
+  <div id="content">
+    <div id="ptrans"></div>
+    <iframe id="webview"
+      src="https://ankitstudypoint.blogspot.com/?m=1"
+      title="Ankit Study Point"
+      allow="downloads; fullscreen"
+      sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-downloads allow-top-navigation">
+    </iframe>
+    <div id="offline">
+      <div class="of-icon">📡</div>
+      <div class="of-title">Internet Nahi Hai</div>
+      <div class="of-sub">Kripaya apna internet connection check karein aur dobara try karein.</div>
+      <button class="of-btn" onclick="retryConn()">🔄 Retry Karo</button>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div id="nav">
+    <div id="nav-ind"></div>
+    <button class="nb active" id="nb-home" onclick="goTo('home',0)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>Home
+    </button>
+    <button class="nb" id="nb-notes" onclick="goTo('notes',1)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>Notes
+    </button>
+    <button class="nb" id="nb-tools" onclick="goTo('tools',2)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+      </svg>Tools
+    </button>
+    <button class="nb" id="nb-search" onclick="goTo('search',3)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>Search
+    </button>
+    <button class="nb" id="nb-contact" onclick="goTo('contact',4)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+      </svg>Contact
+    </button>
+  </div>
+</div>
+
+<!-- Install Banner -->
+<div id="ibanner">
+  <div class="ib-icon">📲</div>
+  <div class="ib-txt">
+    <strong>App Install Karo</strong>
+    <span>Home screen pe add karein – Free!</span>
+  </div>
+  <button class="ib-install" onclick="installApp()">Install</button>
+  <button class="ib-x" onclick="closeBanner()">✕</button>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+// ── CONSTANTS ──
+const BLOG = 'https://ankitstudypoint.blogspot.com';
+const URLS = {
+  home:    BLOG + '/?m=1',
+  notes:   BLOG + '/search/label/D%20Pharma%20Notes?m=1',
+  tools:   BLOG + '/p/ankitstudypoint.html?m=1',
+  search:  BLOG + '/search?m=1',
+  contact: BLOG + '/p/contact-us_01586736301.html?m=1'
+};
+const NAVIDS = ['nb-home','nb-notes','nb-tools','nb-search','nb-contact'];
+let stack = [URLS.home];
+let deferredPrompt = null;
+
+// ── THEME ──
+function applyTheme(){
+  const t = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  const btn = document.getElementById('themeBtn');
+  if(t === 'dark'){
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor" opacity=".7"/></svg>`;
+  } else {
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
+  }
+}
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme');
+  const nxt = cur==='dark'?'light':'dark';
+  localStorage.setItem('theme', nxt);
+  applyTheme();
+  toast(nxt==='dark'?'🌙 Dark Mode ON':'☀️ Light Mode ON');
+}
+applyTheme();
+
+// ── SPLASH ──
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{
+    document.getElementById('splash').classList.add('hide');
+    document.getElementById('app').classList.add('ready');
+  }, 3200);
+});
+
+// ── NAVIGATION ──
+function goTo(page, idx){
+  const url = URLS[page];
+  if(!url) return;
+  // Page flash
+  const pt = document.getElementById('ptrans');
+  pt.classList.add('on');
+  setTimeout(()=>pt.classList.remove('on'), 280);
+  loadURL(url);
+  stack.push(url);
+  setNav(idx);
+}
+
+function setNav(idx){
+  NAVIDS.forEach((id,i)=>{
+    document.getElementById(id)?.classList.toggle('active', i===idx);
+  });
+  document.getElementById('nav-ind').style.left = (idx*20)+'%';
+}
+
+function loadURL(url){
+  const f = document.getElementById('webview');
+  f.classList.remove('loaded');
+  startBar();
+  f.src = url;
+}
+
+// ── PROGRESS BAR ──
+function startBar(){
+  const b=document.getElementById('pbar');
+  b.style.width='0%';b.classList.add('on');
+}
+function doneBar(){
+  const b=document.getElementById('pbar');
+  b.classList.remove('on');b.style.width='100%';
+  setTimeout(()=>b.style.width='0%', 500);
+}
+
+// ── IFRAME ──
+const iv = document.getElementById('webview');
+iv.addEventListener('load', ()=>{
+  doneBar();
+  document.getElementById('offline').classList.remove('show');
+  iv.classList.add('loaded');
+  try {
+    const d = iv.contentDocument || iv.contentWindow.document;
+    if(d && d.head){
+      const s = d.createElement('style');
+      s.textContent = `
+        body{font-size:15px!important;line-height:1.75!important;overflow-x:hidden!important;word-break:break-word!important;}
+        img{max-width:100%!important;height:auto!important;}
+        pre,code{overflow-x:auto!important;white-space:pre-wrap!important;}
+        table{width:100%!important;display:block!important;overflow-x:auto!important;font-size:13px!important;}
+        #sidebar-wrapper,.sidebar,#sidebar,.sidebar-wrapper{display:none!important;}
+        #main-wrapper,.main-wrapper,#content-wrapper,.blog-posts{width:100%!important;max-width:100%!important;float:none!important;margin:0!important;}
+        a[href$=".pdf"]{display:inline-flex!important;align-items:center!important;gap:6px!important;padding:10px 18px!important;background:linear-gradient(135deg,#0a3d62,#00b894)!important;color:#fff!important;border-radius:10px!important;text-decoration:none!important;font-weight:700!important;margin:6px 0!important;}
+        a[href$=".pdf"]::before{content:"📥 ";}
+      `;
+      d.head.appendChild(s);
+      d.addEventListener('click', e=>{
+        const a = e.target.closest('a');
+        if(!a) return;
+        const href = a.href||'';
+        if(href.startsWith('http') && !href.includes('ankitstudypoint') && !href.includes('blogspot')){
+          e.preventDefault();
+          window.open(href,'_blank');
+        } else if(href.includes('ankitstudypoint')||href.includes('blogspot')){
+          stack.push(href);
+        }
+      });
+    }
+  } catch(_){}
+});
+
+// ── REFRESH ──
+function refreshPage(){
+  iv.classList.remove('loaded');startBar();
+  iv.src=iv.src;toast('🔄 Refreshing...');
+}
+
+// ── BACK BUTTON ──
+history.pushState(null,null,location.href);
+window.addEventListener('popstate',()=>{
+  history.pushState(null,null,location.href);
+  if(stack.length>1){
+    stack.pop();
+    const prev=stack[stack.length-1];
+    iv.classList.remove('loaded');startBar();iv.src=prev;
+  } else { toast('📌 Home page pe hain'); }
+});
+
+// ── OFFLINE ──
+window.addEventListener('offline',()=>{ document.getElementById('offline').classList.add('show'); toast('❌ Internet nahi hai'); });
+window.addEventListener('online',()=>{ document.getElementById('offline').classList.remove('show'); toast('✅ Internet wapas aa gaya!'); refreshPage(); });
+function retryConn(){
+  if(navigator.onLine){ document.getElementById('offline').classList.remove('show'); refreshPage(); }
+  else { toast('❌ Abhi bhi nahi hai...'); }
+}
+
+// ── PWA INSTALL ──
+window.addEventListener('beforeinstallprompt', e=>{
+  e.preventDefault(); deferredPrompt=e;
+  setTimeout(()=>document.getElementById('ibanner').classList.add('show'), 4000);
+});
+function installApp(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(r=>{ if(r.outcome==='accepted') toast('🎉 Install ho rahi hai!'); deferredPrompt=null; closeBanner(); });
+  }
+}
+function closeBanner(){ document.getElementById('ibanner').classList.remove('show'); }
+window.addEventListener('appinstalled',()=>toast('✅ App install ho gayi!'));
+
+// ── TOAST ──
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ── SERVICE WORKER ──
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(r=>console.log('SW ✓'))
+      .catch(e=>console.log('SW ✗',e));
+  });
+}
+
+// ── NOTIFICATIONS ──
+setTimeout(async()=>{
+  if('Notification' in window && Notification.permission==='default'){
+    const p=await Notification.requestPermission();
+    if(p==='granted') toast('🔔 Notifications enabled!');
+  }
+},12000);
+</script>
+</body>
+</html>
