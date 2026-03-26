@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="hi" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0a3d62" />
+  <meta name="description" content="Ankit Study Point – D Pharma & B Pharma Notes, Study Tools, Pharmacy Education" />
+  <meta name="keywords" content="D Pharma Notes, B Pharma Notes, Pharmacy Tools, Pharmacology, Pharmaceutics, Study Material" />
+  <meta name="author" content="Ankit Kushwaha" />
+
+  <!-- PWA Meta -->
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Ankit Study Point" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Ankit Study Point – Pharmacy Education" />
+  <meta property="og:description" content="D Pharma & B Pharma Notes, Pharmacy Tools, Free Study Material" />
+  <meta property="og:url" content="https://ankitstudypoint.blogspot.com" />
+  <meta property="og:type" content="website" />
+
+  <title>Ankit Study Point</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="icon" type="image/png" href="icons/icon-192.png" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===================== CSS VARIABLES ===================== */
+    :root {
+      --primary: #0a3d62;
+      --primary-light: #1a5276;
+      --accent: #00b894;
+      --accent2: #00cec9;
+      --bg: #f0f4f8;
+      --surface: #ffffff;
+      --surface2: #e8f0fe;
+      --text: #1a202c;
+      --text-muted: #718096;
+      --border: #e2e8f0;
+      --shadow: 0 4px 20px rgba(10,61,98,0.12);
+      --nav-h: 64px;
+      --header-h: 56px;
+      --radius: 16px;
+      --font-main: 'Nunito', sans-serif;
+      --font-head: 'Poppins', sans-serif;
+      --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ===================== DARK MODE ===================== */
+    [data-theme="dark"] {
+      --primary: #1a5276;
+      --primary-light: #2471a3;
+      --accent: #00b894;
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1c2333;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --border: #30363d;
+      --shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    /* ===================== RESET & BASE ===================== */
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font-main);
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    /* ===================== SPLASH SCREEN ===================== */
+    #splash {
+      position: fixed; inset: 0; z-index: 9999;
+      background: linear-gradient(135deg, #0a3d62 0%, #1a5276 40%, #00b894 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    #splash.hide { opacity: 0; transform: scale(1.05); pointer-events: none; }
+
+    .splash-logo {
+      width: 100px; height: 100px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 28px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      animation: splashPop 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+    }
+    .splash-logo svg { width: 60px; height: 60px; }
+
+    .splash-title {
+      font-family: var(--font-head);
+      font-size: 26px; font-weight: 700;
+      color: #fff; letter-spacing: 0.5px;
+      animation: fadeUp 0.6s ease 0.5s both;
+    }
+    .splash-sub {
+      font-size: 14px; color: rgba(255,255,255,0.75);
+      margin-top: 6px;
+      animation: fadeUp 0.6s ease 0.7s both;
+    }
+    .splash-loader {
+      margin-top: 48px;
+      width: 180px; height: 4px;
+      background: rgba(255,255,255,0.2); border-radius: 4px;
+      overflow: hidden;
+      animation: fadeUp 0.6s ease 0.8s both;
+    }
+    .splash-loader-bar {
+      height: 100%; width: 0;
+      background: linear-gradient(90deg, #00b894, #00cec9);
+      border-radius: 4px;
+      animation: loaderFill 2s ease 1s forwards;
+    }
+
+    @keyframes splashPop { from { opacity:0; transform: scale(0.5); } to { opacity:1; transform: scale(1); } }
+    @keyframes fadeUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+    @keyframes loaderFill { to { width: 100%; } }
+
+    /* ===================== APP SHELL ===================== */
+    #app {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      opacity: 0; transition: opacity 0.5s ease;
+    }
+    #app.ready { opacity: 1; }
+
+    /* ===================== HEADER ===================== */
+    #header {
+      height: var(--header-h);
+      background: var(--primary);
+      display: flex; align-items: center;
+      padding: 0 16px; gap: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+      position: relative; z-index: 100;
+      flex-shrink: 0;
+    }
+
+    .header-logo {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .header-logo svg { width: 22px; height: 22px; }
+
+    .header-title {
+      flex: 1;
+      font-family: var(--font-head);
+      font-size: 16px; font-weight: 700;
+      color: #fff; line-height: 1.2;
+    }
+    .header-title span { display: block; font-size: 11px; font-weight: 400; opacity: 0.75; }
+
+    .header-btn {
+      width: 38px; height: 38px;
+      background: rgba(255,255,255,0.12);
+      border: none; border-radius: 10px;
+      cursor: pointer; display: flex;
+      align-items: center; justify-content: center;
+      color: #fff; transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .header-btn:hover { background: rgba(255,255,255,0.22); }
+    .header-btn svg { width: 20px; height: 20px; }
+
+    /* ===================== PROGRESS BAR ===================== */
+    #progress-bar {
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      position: absolute; top: var(--header-h); left: 0;
+      width: 0%; transition: width 0.3s ease;
+      z-index: 99;
+    }
+    #progress-bar.loading { animation: progressPulse 1.5s ease infinite; }
+    @keyframes progressPulse {
+      0% { width: 10%; } 60% { width: 80%; } 100% { width: 90%; }
+    }
+
+    /* ===================== CONTENT AREA ===================== */
+    #content {
+      flex: 1; overflow: hidden; position: relative;
+    }
+
+    /* WebView iframe */
+    #webview {
+      width: 100%; height: 100%;
+      border: none; display: block;
+      background: var(--bg);
+    }
+
+    /* ===================== OFFLINE SCREEN ===================== */
+    #offline-screen {
+      position: absolute; inset: 0;
+      background: var(--bg);
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 16px; padding: 32px; text-align: center;
+    }
+    #offline-screen.show { display: flex; }
+    .offline-icon { font-size: 64px; }
+    .offline-title { font-family: var(--font-head); font-size: 22px; font-weight: 700; color: var(--text); }
+    .offline-sub { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+    .retry-btn {
+      padding: 12px 28px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff; border: none; border-radius: 12px;
+      font-family: var(--font-main); font-size: 15px; font-weight: 700;
+      cursor: pointer; margin-top: 8px;
+      box-shadow: 0 4px 16px rgba(0,184,148,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .retry-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,184,148,0.4); }
+
+    /* ===================== BOTTOM NAVIGATION ===================== */
+    #bottom-nav {
+      height: var(--nav-h);
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+      flex-shrink: 0;
+      position: relative; z-index: 100;
+    }
+
+    .nav-item {
+      flex: 1; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 4px; cursor: pointer;
+      border: none; background: transparent;
+      color: var(--text-muted);
+      font-family: var(--font-main);
+      font-size: 11px; font-weight: 600;
+      transition: color var(--transition);
+      position: relative;
+    }
+    .nav-item.active { color: var(--accent); }
+    .nav-item.active::before {
+      content: '';
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 32px; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 0 0 4px 4px;
+    }
+    .nav-icon {
+      width: 24px; height: 24px;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .nav-item.active .nav-icon { transform: translateY(-2px); }
+    .nav-item svg { width: 22px; height: 22px; }
+
+    /* ===================== INSTALL BANNER ===================== */
+    #install-banner {
+      position: fixed; bottom: calc(var(--nav-h) + 12px); left: 12px; right: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: 16px; padding: 14px 16px;
+      display: none; align-items: center; gap: 12px;
+      box-shadow: 0 8px 32px rgba(10,61,98,0.3);
+      z-index: 200; animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    #install-banner.show { display: flex; }
+    @keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+    .banner-icon { font-size: 28px; flex-shrink: 0; }
+    .banner-text { flex: 1; }
+    .banner-text strong { display: block; color: #fff; font-size: 14px; font-weight: 700; }
+    .banner-text span { color: rgba(255,255,255,0.75); font-size: 12px; }
+    .banner-install {
+      padding: 8px 16px;
+      background: var(--accent);
+      color: #fff; border: none; border-radius: 10px;
+      font-family: var(--font-main); font-size: 13px; font-weight: 700;
+      cursor: pointer; white-space: nowrap;
+    }
+    .banner-close {
+      width: 28px; height: 28px;
+      background: rgba(255,255,255,0.15);
+      border: none; border-radius: 8px;
+      color: #fff; cursor: pointer; font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ===================== TOAST ===================== */
+    #toast {
+      position: fixed; bottom: calc(var(--nav-h) + 16px); left: 50%; transform: translateX(-50%) translateY(20px);
+      background: #1a202c; color: #fff;
+      padding: 10px 20px; border-radius: 10px;
+      font-size: 13px; font-weight: 600;
+      opacity: 0; pointer-events: none; white-space: nowrap;
+      transition: all 0.3s ease; z-index: 500;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ===================== DARK MODE TOGGLE ANIMATION ===================== */
+    .dark-toggle-icon { transition: transform 0.5s ease; }
+    [data-theme="dark"] .dark-toggle-icon { transform: rotate(180deg); }
+  </style>
+</head>
+<body>
+
+  <!-- ===================== SPLASH SCREEN ===================== -->
+  <div id="splash">
+    <div class="splash-logo">
+      <img src="icons/icon-192.png" alt="Ankit Study Point" style="width:70px;height:70px;border-radius:16px;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <!-- Fallback SVG if icon not loaded -->
+      <svg style="display:none" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="6" width="44" height="48" rx="8" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="2.5"/>
+        <path d="M20 20h8a6 6 0 010 12H20V20z" fill="white" opacity="0.9"/>
+        <path d="M20 32h7l6 9" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="40" cy="38" r="8" fill="rgba(0,184,148,0.8)" stroke="white" stroke-width="2"/>
+        <path d="M40 34v8M36 38h8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="splash-title">Ankit Study Point</div>
+    <div class="splash-sub">🎓 Pharmacy Education Hub</div>
+    <div class="splash-loader"><div class="splash-loader-bar"></div></div>
+  </div>
+
+  <!-- ===================== MAIN APP ===================== -->
+  <div id="app">
+
+    <!-- Header -->
+    <div id="header">
+      <div class="header-logo">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="18" height="18" rx="4" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="1.5"/>
+          <path d="M8 8h3a3 3 0 010 6H8V8z" fill="white" opacity="0.9"/>
+          <path d="M8 14h2.5l3 4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="17" cy="17" r="3" fill="rgba(0,184,148,0.8)" stroke="white" stroke-width="1.2"/>
+          <path d="M17 15.5v3M15.5 17h3" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="header-title">
+        Ankit Study Point
+        <span>Pharmacy Education</span>
+      </div>
+      <!-- Dark Mode Toggle -->
+      <button class="header-btn" id="darkModeBtn" onclick="toggleDarkMode()" title="Dark Mode">
+        <svg class="dark-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor" opacity="0.8"/>
+        </svg>
+      </button>
+      <!-- Refresh -->
+      <button class="header-btn" onclick="refreshPage()" title="Refresh">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 4 23 10 17 10"/>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div id="progress-bar"></div>
+
+    <!-- Content -->
+    <div id="content">
+      <iframe id="webview"
+        src="https://ankitstudypoint.blogspot.com/?m=1"
+        title="Ankit Study Point"
+        allow="downloads; fullscreen"
+        sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-downloads allow-top-navigation">
+      </iframe>
+      <!-- Offline Screen -->
+      <div id="offline-screen">
+        <div class="offline-icon">📡</div>
+        <div class="offline-title">No Internet Connection</div>
+        <div class="offline-sub">Please check your internet connection and try again.<br/>कृपया अपना इंटरनेट कनेक्शन जांचें।</div>
+        <button class="retry-btn" onclick="retryConnection()">🔄 Retry / फिर कोशिश करें</button>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div id="bottom-nav">
+      <button class="nav-item active" id="nav-home" onclick="navigate('home')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Home
+      </button>
+      <button class="nav-item" id="nav-notes" onclick="navigate('notes')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+        Notes
+      </button>
+      <button class="nav-item" id="nav-tools" onclick="navigate('tools')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.07 4.93A10 10 0 1 0 4.93 19.07"/>
+          <path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>
+        </svg>
+        Tools
+      </button>
+      <button class="nav-item" id="nav-search" onclick="navigate('search')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        Search
+      </button>
+      <button class="nav-item" id="nav-contact" onclick="navigate('contact')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        Contact
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Install Banner -->
+  <div id="install-banner">
+    <div class="banner-icon">📲</div>
+    <div class="banner-text">
+      <strong>Install App</strong>
+      <span>Home screen pe add karein – Free!</span>
+    </div>
+    <button class="banner-install" onclick="installApp()">Install</button>
+    <button class="banner-close" onclick="closeBanner()">✕</button>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <script>
+    // ===================== STATE =====================
+    const BLOG_URL = 'https://ankitstudypoint.blogspot.com';
+    let deferredPrompt = null;
+    let historyStack = [BLOG_URL + '/?m=1'];
+    let currentNavId = 'nav-home';
+
+    // Navigation URLs — ?m=1 forces Blogger mobile view
+    const NAV_URLS = {
+      home:    BLOG_URL + '/?m=1',
+      notes:   BLOG_URL + '/search/label/D%20Pharma%20Notes?m=1',
+      tools:   BLOG_URL + '/p/ankitstudypoint.html?m=1',
+      search:  BLOG_URL + '/search?m=1',
+      contact: BLOG_URL + '/p/contact-us_01586736301.html?m=1'
+    };
+
+    // ===================== SPLASH =====================
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('splash').classList.add('hide');
+        document.getElementById('app').classList.add('ready');
+      }, 3000);
+    });
+
+    // ===================== DARK MODE =====================
+    function toggleDarkMode() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      showToast(isDark ? '☀️ Light Mode' : '🌙 Dark Mode');
+    }
+
+    // Restore saved theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+
+    // ===================== NAVIGATION =====================
+    function navigate(page) {
+      const url = NAV_URLS[page];
+      loadURL(url);
+
+      // Update active nav
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('nav-' + page).classList.add('active');
+      currentNavId = 'nav-' + page;
+
+      historyStack.push(url);
+    }
+
+    function loadURL(url) {
+      const iframe = document.getElementById('webview');
+      startProgress();
+      iframe.src = url;
+    }
+
+    // ===================== PROGRESS BAR =====================
+    function startProgress() {
+      const bar = document.getElementById('progress-bar');
+      bar.style.width = '0%';
+      bar.classList.add('loading');
+    }
+
+    function finishProgress() {
+      const bar = document.getElementById('progress-bar');
+      bar.classList.remove('loading');
+      bar.style.width = '100%';
+      setTimeout(() => { bar.style.width = '0%'; }, 400);
+    }
+
+    // ===================== IFRAME EVENTS =====================
+    const iframe = document.getElementById('webview');
+
+    iframe.addEventListener('load', () => {
+      finishProgress();
+      document.getElementById('offline-screen').classList.remove('show');
+
+      // Inject mobile CSS into iframe for better reading
+      try {
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        if (iframeDoc && iframeDoc.head) {
+          const style = iframeDoc.createElement('style');
+          style.textContent = `
+            /* Force mobile layout */
+            body { font-size: 15px !important; line-height: 1.7 !important; overflow-x: hidden !important; }
+            img { max-width: 100% !important; height: auto !important; }
+            pre, code { overflow-x: auto !important; white-space: pre-wrap !important; word-break: break-all !important; }
+            table { width: 100% !important; overflow-x: auto !important; display: block; font-size: 13px !important; }
+            .post-body { padding: 0 4px !important; }
+            /* Hide desktop sidebar */
+            #sidebar-wrapper, .sidebar, #sidebar { display: none !important; }
+            /* Full width content */
+            #main-wrapper, .main-wrapper, #content-wrapper { width: 100% !important; max-width: 100% !important; float: none !important; }
+            /* PDF download button */
+            a[href$=".pdf"] {
+              display: inline-flex !important; align-items: center !important;
+              gap: 6px !important; padding: 8px 16px !important;
+              background: linear-gradient(135deg, #0a3d62, #00b894) !important;
+              color: white !important; border-radius: 8px !important;
+              text-decoration: none !important; font-weight: 700 !important;
+              margin: 4px 0 !important;
+            }
+            a[href$=".pdf"]::before { content: "📥 "; }
+          `;
+          iframeDoc.head.appendChild(style);
+
+          // Intercept links inside iframe
+          iframeDoc.addEventListener('click', (e) => {
+            const a = e.target.closest('a');
+            if (!a) return;
+            const href = a.getAttribute('href');
+            if (!href) return;
+
+            // External link → open in new tab
+            if (href.startsWith('http') && !href.includes('ankitstudypoint')) {
+              e.preventDefault();
+              window.open(href, '_blank');
+              return;
+            }
+
+            // PDF → allow download
+            if (href.endsWith('.pdf')) {
+              // Let browser handle download
+              return;
+            }
+
+            // Internal → load in iframe, push to history
+            if (href.includes('ankitstudypoint') || href.startsWith('/')) {
+              historyStack.push(href);
+            }
+          });
+        }
+      } catch(e) {
+        // Cross-origin restriction — ignore silently
+      }
+    });
+
+    // ===================== REFRESH =====================
+    function refreshPage() {
+      startProgress();
+      iframe.src = iframe.src;
+      showToast('🔄 Refreshing...');
+    }
+
+    // ===================== BACK BUTTON =====================
+    window.addEventListener('popstate', handleBack);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') handleBack();
+    });
+
+    // Android back button via history API
+    history.pushState(null, null, location.href);
+    window.addEventListener('popstate', function () {
+      history.pushState(null, null, location.href);
+      handleBack();
+    });
+
+    function handleBack() {
+      if (historyStack.length > 1) {
+        historyStack.pop();
+        const prev = historyStack[historyStack.length - 1];
+        startProgress();
+        iframe.src = prev;
+      } else {
+        showToast('📌 Aap home page pe hain');
+      }
+    }
+
+    // ===================== OFFLINE DETECTION =====================
+    function checkConnection() {
+      if (!navigator.onLine) {
+        document.getElementById('offline-screen').classList.add('show');
+        showToast('❌ Internet nahi hai');
+      } else {
+        document.getElementById('offline-screen').classList.remove('show');
+      }
+    }
+
+    function retryConnection() {
+      if (navigator.onLine) {
+        document.getElementById('offline-screen').classList.remove('show');
+        refreshPage();
+      } else {
+        showToast('❌ Still no internet...');
+      }
+    }
+
+    window.addEventListener('offline', checkConnection);
+    window.addEventListener('online', () => {
+      document.getElementById('offline-screen').classList.remove('show');
+      showToast('✅ Back online!');
+      refreshPage();
+    });
+
+    // ===================== PWA INSTALL =====================
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      setTimeout(() => {
+        document.getElementById('install-banner').classList.add('show');
+      }, 3000);
+    });
+
+    function installApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((result) => {
+          if (result.outcome === 'accepted') showToast('🎉 App install ho raha hai!');
+          deferredPrompt = null;
+          closeBanner();
+        });
+      }
+    }
+
+    function closeBanner() {
+      document.getElementById('install-banner').classList.remove('show');
+    }
+
+    window.addEventListener('appinstalled', () => {
+      showToast('✅ App successfully installed!');
+    });
+
+    // ===================== TOAST =====================
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ===================== SERVICE WORKER =====================
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then(reg => console.log('SW registered:', reg.scope))
+          .catch(err => console.log('SW error:', err));
+      });
+    }
+
+    // ===================== PUSH NOTIFICATIONS =====================
+    async function requestNotificationPermission() {
+      if ('Notification' in window) {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+          showToast('🔔 Notifications enabled!');
+          // Subscribe to push (requires backend – see guide)
+        }
+      }
+    }
+
+    // Ask after 10 seconds
+    setTimeout(requestNotificationPermission, 10000);
+  </script>
+
+</body>
+</html>
