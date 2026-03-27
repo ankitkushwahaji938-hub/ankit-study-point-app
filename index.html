@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="theme-color" content="#0a0a0a"/>
+  <meta name="description" content="Ankit Study Point – D Pharma & B Pharma Notes, Study Tools, Pharmacy Education"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Ankit Study Point"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
+  <link rel="icon" type="image/png" href="icons/icon-192.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+  <title>Ankit Study Point</title>
+<style>
+/* ═══ CSS VARIABLES ═══ */
+:root {
+  --p: #2979ff;
+  --p2: #1565c0;
+  --accent: #00e5a0;
+  --accent2: #00bcd4;
+  --red: #ff4569;
+  --bg: #0a0a0a;
+  --bg2: #111111;
+  --bg3: #1a1a1a;
+  --surface: #1e1e1e;
+  --card: #252525;
+  --border: #2a2a2a;
+  --text: #f0f0f0;
+  --muted: #888;
+  --shadow: 0 8px 40px rgba(0,0,0,.7);
+  --nav-h: 64px;
+  --hdr-h: 60px;
+  --fn: 'Nunito', sans-serif;
+  --fh: 'Poppins', sans-serif;
+  --ease: cubic-bezier(0.4,0,0.2,1);
+  --spring: cubic-bezier(0.34,1.56,0.64,1);
+}
+
+*, *::before, *::after {
+  margin: 0; padding: 0; box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  height: 100%; width: 100%;
+  font-family: var(--fn);
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══ SPLASH SCREEN ═══ */
+#splash {
+  position: fixed; inset: 0; z-index: 9999;
+  background: linear-gradient(145deg, #0a0a0a 0%, #0a1628 50%, #001a12 100%);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity .7s var(--ease), transform .7s var(--ease);
+}
+#splash.hide { opacity: 0; transform: scale(1.06); pointer-events: none; }
+
+.sp-glow {
+  position: absolute; width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(0,229,160,.12) 0%, transparent 70%);
+  border-radius: 50%; animation: glowPulse 3s ease infinite;
+}
+@keyframes glowPulse { 0%,100%{transform:scale(1);opacity:.6;} 50%{transform:scale(1.3);opacity:1;} }
+
+.sp-logo {
+  width: 110px; height: 110px;
+  background: linear-gradient(135deg, rgba(41,121,255,.25), rgba(0,229,160,.2));
+  border: 2px solid rgba(0,229,160,.35);
+  border-radius: 28px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 28px; position: relative; z-index: 1;
+  box-shadow: 0 0 40px rgba(0,229,160,.2), 0 12px 40px rgba(0,0,0,.5);
+  animation: popIn .8s cubic-bezier(0.34,1.56,0.64,1) .2s both;
+  overflow: hidden;
+}
+.sp-logo img { width: 90px; height: 90px; object-fit: contain; border-radius: 22px; }
+.sp-logo-fallback { font-size: 52px; }
+
+.sp-title {
+  font-family: var(--fh); font-size: 26px; font-weight: 800;
+  color: #fff; letter-spacing: -.3px;
+  animation: fadeUp .6s ease .5s both; position: relative; z-index: 1;
+}
+.sp-sub {
+  font-size: 13px; color: rgba(255,255,255,.55);
+  margin-top: 6px; animation: fadeUp .6s ease .65s both; position: relative; z-index: 1;
+}
+.sp-bar {
+  margin-top: 56px; width: 200px; height: 3px;
+  background: rgba(255,255,255,.1); border-radius: 3px; overflow: hidden;
+  animation: fadeUp .5s ease .8s both; position: relative; z-index: 1;
+}
+.sp-fill {
+  height: 100%; width: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 3px;
+  animation: fillBar 2.5s cubic-bezier(0.25,0.46,0.45,0.94) 1s forwards;
+  box-shadow: 0 0 12px rgba(0,229,160,.5);
+}
+
+@keyframes popIn { from{opacity:0;transform:scale(.4);} to{opacity:1;transform:scale(1);} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+@keyframes fillBar { to { width: 100%; } }
+
+/* ═══ APP WRAPPER ═══ */
+#app {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  opacity: 0; transition: opacity .5s ease;
+}
+#app.ready { opacity: 1; }
+
+/* ═══ HEADER ═══ */
+#hdr {
+  height: var(--hdr-h);
+  background: linear-gradient(135deg, #0d1f3c, #1a2a4a);
+  display: flex; align-items: center;
+  padding: 0 14px; gap: 10px;
+  box-shadow: 0 2px 20px rgba(0,0,0,.5);
+  position: relative; z-index: 200; flex-shrink: 0;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.hdr-logo {
+  width: 38px; height: 38px;
+  background: rgba(0,229,160,.15); border: 1.5px solid rgba(0,229,160,.3);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; flex-shrink: 0;
+}
+.hdr-logo img { width: 30px; height: 30px; object-fit: contain; border-radius: 8px; }
+
+.hdr-info { flex: 1; min-width: 0; }
+.hdr-name {
+  font-family: var(--fh); font-size: 15px; font-weight: 700;
+  color: #fff; line-height: 1.2; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.hdr-sub { font-size: 10px; color: rgba(255,255,255,.5); margin-top: 1px; }
+
+.hdr-btn {
+  width: 38px; height: 38px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,.85); flex-shrink: 0;
+  transition: background .2s, transform .15s;
+}
+.hdr-btn:active { transform: scale(.88); background: rgba(255,255,255,.14); }
+.hdr-btn svg { width: 18px; height: 18px; }
+
+/* ═══ PROGRESS BAR ═══ */
+#pbar {
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  position: absolute; top: var(--hdr-h); left: 0;
+  width: 0%; z-index: 199;
+  transition: width .25s ease;
+  box-shadow: 0 0 10px rgba(0,229,160,.6);
+}
+#pbar.on { animation: pb 2s ease infinite; }
+@keyframes pb { 0%{width:5%;} 60%{width:72%;} 100%{width:88%;} }
+
+/* ═══ CONTENT ═══ */
+#content { flex: 1; overflow: hidden; position: relative; }
+
+#webview {
+  width: 100%; height: 100%; border: none;
+  display: block; background: var(--bg);
+  opacity: 0; transition: opacity .4s ease;
+}
+#webview.loaded { opacity: 1; }
+
+/* ═══ OFFLINE ═══ */
+#offline {
+  position: absolute; inset: 0; background: var(--bg);
+  display: none; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 16px; padding: 36px; text-align: center; z-index: 50;
+}
+#offline.show { display: flex; }
+.of-icon { font-size: 72px; animation: pulse 2s ease infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.08);} }
+.of-title { font-family: var(--fh); font-size: 22px; font-weight: 700; }
+.of-sub { font-size: 14px; color: var(--muted); line-height: 1.7; max-width: 280px; }
+.of-btn {
+  padding: 13px 32px;
+  background: linear-gradient(135deg, #0a3d62, #00b894);
+  color: #fff; border: none; border-radius: 14px;
+  font-family: var(--fn); font-size: 15px; font-weight: 800;
+  cursor: pointer; margin-top: 8px;
+  box-shadow: 0 6px 24px rgba(0,184,148,.3);
+}
+
+/* ═══ BOTTOM NAV ═══ */
+#nav {
+  height: var(--nav-h);
+  background: #111;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: stretch;
+  box-shadow: 0 -8px 30px rgba(0,0,0,.4);
+  flex-shrink: 0; position: relative; z-index: 200;
+}
+
+#nav-ind {
+  position: absolute; top: 0; left: 0;
+  height: 2px; width: 25%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 0 12px rgba(0,229,160,.6);
+  transition: left .4s cubic-bezier(0.34,1.2,0.64,1);
+}
+
+.nb {
+  flex: 1; border: none; background: transparent;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 4px; cursor: pointer;
+  color: #555;
+  font-family: var(--fn); font-size: 10px;
+  font-weight: 700; letter-spacing: .4px;
+  transition: color .25s, transform .2s;
+  position: relative;
+}
+.nb.active { color: var(--accent); }
+.nb:active { transform: scale(.88); }
+
+.nb svg { width: 22px; height: 22px; transition: transform .3s var(--spring); }
+.nb.active svg { transform: translateY(-2px) scale(1.1); }
+
+/* Shorts button special style */
+.nb.nb-shorts { color: #555; }
+.nb.nb-shorts.active { color: var(--red); }
+#nav-ind.shorts-active {
+  background: linear-gradient(90deg, var(--red), #ff8a80);
+  box-shadow: 0 0 12px rgba(255,69,105,.6);
+}
+.nb.nb-shorts.active svg { filter: drop-shadow(0 0 8px rgba(255,69,105,.8)); }
+
+/* ═══ PAGE TRANSITION ═══ */
+#ptrans {
+  position: absolute; inset: 0;
+  background: var(--bg); z-index: 100;
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s ease;
+}
+#ptrans.on { opacity: 1; pointer-events: all; }
+
+/* ═══ SIDEBAR OVERLAY ═══ */
+#sb-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.7);
+  z-index: 500; opacity: 0; pointer-events: none;
+  transition: opacity .3s ease;
+  backdrop-filter: blur(4px);
+}
+#sb-overlay.open { opacity: 1; pointer-events: all; }
+
+/* ═══ SIDEBAR ═══ */
+#sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: 84%; max-width: 340px;
+  background: var(--bg2); z-index: 501;
+  transform: translateX(-100%);
+  transition: transform .35s var(--ease);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  box-shadow: 8px 0 40px rgba(0,0,0,.6);
+}
+#sidebar.open { transform: translateX(0); }
+
+.sb-hdr {
+  background: linear-gradient(135deg, #0d1f3c, #1a3a5c);
+  padding: 22px 18px 18px; flex-shrink: 0;
+}
+.sb-hdr-top {
+  display: flex; align-items: center;
+  gap: 12px; margin-bottom: 14px;
+}
+.sb-hdr-logo {
+  width: 46px; height: 46px;
+  background: rgba(0,229,160,.15); border-radius: 14px;
+  overflow: hidden; display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid rgba(0,229,160,.3);
+}
+.sb-hdr-logo img { width: 36px; height: 36px; object-fit: contain; }
+.sb-hdr-title { font-family: var(--fh); font-size: 16px; font-weight: 700; color: #fff; }
+.sb-hdr-sub { font-size: 11px; color: rgba(255,255,255,.55); margin-top: 2px; }
+.sb-close {
+  margin-left: auto; width: 34px; height: 34px;
+  background: rgba(255,255,255,.1); border: none;
+  border-radius: 10px; color: #fff; font-size: 16px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.sb-tools-label {
+  background: rgba(0,229,160,.12);
+  border: 1px solid rgba(0,229,160,.25);
+  border-radius: 10px; padding: 7px 14px;
+  font-size: 11px; font-weight: 800;
+  color: var(--accent); letter-spacing: .6px;
+  display: inline-block;
+}
+.sb-body { flex: 1; overflow-y: auto; padding: 16px; }
+.sb-body::-webkit-scrollbar { width: 3px; }
+.sb-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* Tool cards */
+.tool-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 18px; margin-bottom: 14px;
+  overflow: hidden; transition: transform .2s;
+}
+.tool-card:active { transform: scale(.98); }
+.tool-card-hdr {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s;
+}
+.tool-card.open .tool-card-hdr { border-color: var(--border); }
+.tool-icon {
+  width: 42px; height: 42px; border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.tool-card-info { flex: 1; }
+.tool-card-name { font-family: var(--fh); font-size: 14px; font-weight: 700; color: var(--text); }
+.tool-card-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.tool-chevron {
+  width: 22px; height: 22px; color: var(--muted);
+  transition: transform .3s var(--ease); flex-shrink: 0;
+}
+.tool-card.open .tool-chevron { transform: rotate(180deg); }
+.tool-content {
+  max-height: 0; overflow: hidden;
+  transition: max-height .4s var(--ease); padding: 0 16px;
+}
+.tool-card.open .tool-content { max-height: 700px; padding: 16px; }
+
+.t-label { font-size: 11px; font-weight: 800; color: var(--muted); margin-bottom: 5px; display: block; letter-spacing: .5px; }
+.t-input {
+  width: 100%; padding: 10px 14px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; color: var(--text);
+  font-family: var(--fn); font-size: 14px;
+  outline: none; transition: border .2s;
+  -webkit-appearance: none;
+}
+.t-input:focus { border-color: var(--accent); }
+.t-select {
+  width: 100%; padding: 10px 14px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; color: var(--text);
+  font-family: var(--fn); font-size: 14px;
+  outline: none; cursor: pointer; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+  padding-right: 36px;
+}
+.t-row { display: flex; gap: 10px; margin-bottom: 12px; }
+.t-row > * { flex: 1; }
+.t-btn {
+  width: 100%; padding: 12px;
+  background: linear-gradient(135deg, #1565c0, #00b894);
+  color: #fff; border: none; border-radius: 11px;
+  font-family: var(--fn); font-size: 14px; font-weight: 800;
+  cursor: pointer; margin-top: 4px;
+  transition: opacity .2s, transform .15s;
+  box-shadow: 0 4px 16px rgba(0,184,148,.25);
+}
+.t-btn:active { opacity: .85; transform: scale(.97); }
+.t-result {
+  margin-top: 12px; padding: 14px;
+  background: linear-gradient(135deg, rgba(0,229,160,.08), rgba(0,188,212,.08));
+  border: 1px solid rgba(0,229,160,.2);
+  border-radius: 12px; display: none;
+  animation: fadeUp .3s ease;
+}
+.t-result.show { display: block; }
+.t-result-val { font-family: var(--fh); font-size: 22px; font-weight: 700; color: var(--accent); text-align: center; }
+.t-result-label { font-size: 12px; color: var(--muted); text-align: center; margin-top: 4px; }
+.abbr-result { margin-top: 12px; display: none; animation: fadeUp .3s ease; }
+.abbr-result.show { display: block; }
+.abbr-item { padding: 10px 14px; background: var(--bg3); border-radius: 10px; margin-bottom: 8px; }
+.abbr-short { font-family: var(--fh); font-size: 15px; font-weight: 700; color: var(--accent); }
+.abbr-long { font-size: 13px; color: var(--text); margin-top: 2px; }
+.abbr-cat { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.sb-footer { padding: 12px 18px; border-top: 1px solid var(--border); flex-shrink: 0; }
+.sb-footer-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 11px;
+  color: var(--text); text-decoration: none;
+  font-size: 14px; font-weight: 600;
+  transition: background .2s; cursor: pointer; border: none;
+  background: transparent; width: 100%;
+}
+.sb-footer-link:active { background: var(--bg3); }
+.sb-footer-link svg { width: 18px; height: 18px; color: var(--muted); }
+
+/* ═══ INSTALL BANNER ═══ */
+#ibanner {
+  position: fixed;
+  bottom: calc(var(--nav-h) + 12px);
+  left: 14px; right: 14px;
+  background: linear-gradient(135deg, #0d1f3c, #1565c0);
+  border-radius: 18px; padding: 14px;
+  display: none; align-items: center; gap: 12px;
+  box-shadow: 0 12px 40px rgba(13,31,60,.5);
+  z-index: 300; border: 1px solid rgba(255,255,255,.1);
+  animation: slideUp .45s var(--spring);
+}
+#ibanner.show { display: flex; }
+@keyframes slideUp { from{opacity:0;transform:translateY(28px);} to{opacity:1;transform:translateY(0);} }
+.ib-icon { font-size: 28px; flex-shrink: 0; }
+.ib-txt { flex: 1; }
+.ib-txt strong { display: block; color: #fff; font-size: 13px; font-weight: 800; }
+.ib-txt span { color: rgba(255,255,255,.65); font-size: 11px; }
+.ib-install {
+  padding: 9px 16px;
+  background: var(--accent); color: #0a0a0a;
+  border: none; border-radius: 10px;
+  font-family: var(--fn); font-size: 13px; font-weight: 800;
+  cursor: pointer; flex-shrink: 0;
+}
+.ib-x {
+  width: 28px; height: 28px;
+  background: rgba(255,255,255,.1);
+  border: none; border-radius: 8px; color: #fff;
+  cursor: pointer; font-size: 13px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+/* ═══ TOAST ═══ */
+#toast {
+  position: fixed;
+  bottom: calc(var(--nav-h) + 20px);
+  left: 50%; transform: translateX(-50%) translateY(18px);
+  background: rgba(30,30,30,.95);
+  backdrop-filter: blur(20px);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 10px 22px; border-radius: 30px;
+  font-size: 13px; font-weight: 700;
+  opacity: 0; pointer-events: none; white-space: nowrap;
+  transition: all .3s var(--ease); z-index: 9000;
+  box-shadow: 0 8px 30px rgba(0,0,0,.4);
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ═══════════════════════════════════════
+   SHORTS OVERLAY — Full Screen
+═══════════════════════════════════════ */
+#shorts-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: #000;
+  display: none; flex-direction: column;
+  transform: translateY(100%);
+  transition: transform .42s cubic-bezier(0.32,0.72,0,1);
+}
+#shorts-overlay.open {
+  display: flex;
+  transform: translateY(0);
+}
+#shorts-overlay.closing {
+  transform: translateY(100%);
+}
+
+/* Shorts Header */
+#shorts-hdr {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 18px;
+  background: linear-gradient(to bottom, rgba(0,0,0,.85) 0%, transparent 100%);
+  z-index: 10; flex-shrink: 0;
+}
+#shorts-logo {
+  font-family: var(--fh); font-size: 17px; font-weight: 800;
+  color: #fff; display: flex; align-items: center; gap: 8px;
+}
+#shorts-logo::before {
+  content: '';
+  display: inline-block;
+  width: 28px; height: 20px;
+  background: var(--red); border-radius: 6px;
+  position: relative;
+}
+#shorts-logo::after {
+  content: '▶';
+  position: absolute;
+  font-size: 10px; color: #fff;
+  margin-left: 9px;
+}
+#shorts-close {
+  width: 38px; height: 38px;
+  background: rgba(255,255,255,.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 50%; color: #fff;
+  font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, transform .15s;
+}
+#shorts-close:active { transform: scale(.88); background: rgba(255,255,255,.25); }
+
+/* Shorts Feed — snap scroll */
+#shorts-feed {
+  width: 100%; height: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+#shorts-feed::-webkit-scrollbar { display: none; }
+
+/* Swipe hint */
+#shorts-hint {
+  position: absolute; bottom: 30px; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(10px);
+  padding: 6px 18px; border-radius: 20px;
+  color: rgba(255,255,255,.8); font-size: 12px; font-weight: 600;
+  z-index: 10; pointer-events: none;
+  animation: hintFade 4s ease 2s both;
+}
+@keyframes hintFade { 0%{opacity:0;} 20%{opacity:1;} 70%{opacity:1;} 100%{opacity:0;} }
+
+/* Loading spinner */
+#shorts-loading {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 16px; color: rgba(255,255,255,.7);
+  font-size: 14px; z-index: 5;
+}
+.sh-spin {
+  width: 44px; height: 44px;
+  border: 3px solid rgba(255,255,255,.15);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Individual short — thumbnail card */
+.short-item {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  position: relative;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overflow: hidden;
+  background: #111;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* Thumbnail */
+.short-thumb {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: brightness(.85);
+  transition: transform .4s ease, filter .3s;
+}
+.short-item:active .short-thumb { transform: scale(1.03); filter: brightness(.7); }
+
+/* Gradients */
+.short-grad-top {
+  position: absolute; top: 0; left: 0; right: 0; height: 35%;
+  background: linear-gradient(to bottom, rgba(0,0,0,.65) 0%, transparent 100%);
+  z-index: 2; pointer-events: none;
+}
+.short-grad-bot {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
+  background: linear-gradient(to top, rgba(0,0,0,.95) 0%, rgba(0,0,0,.5) 60%, transparent 100%);
+  z-index: 2; pointer-events: none;
+}
+
+/* Big play button center */
+.short-play-btn {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 72px; height: 72px;
+  background: rgba(255,255,255,.2);
+  backdrop-filter: blur(16px);
+  border: 2.5px solid rgba(255,255,255,.5);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 3;
+  transition: transform .2s var(--spring), background .2s;
+  box-shadow: 0 4px 30px rgba(0,0,0,.4);
+}
+.short-play-btn::after {
+  content: '';
+  display: block;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 14px 0 14px 26px;
+  border-color: transparent transparent transparent #fff;
+  margin-left: 5px;
+}
+.short-item:active .short-play-btn { transform: translate(-50%, -50%) scale(.88); }
+
+/* Info bottom left */
+.short-info {
+  position: absolute; bottom: 80px; left: 16px;
+  right: 76px; z-index: 4;
+}
+.short-channel {
+  font-family: var(--fh); font-size: 13px; font-weight: 700;
+  color: var(--accent); margin-bottom: 6px;
+  text-shadow: 0 1px 8px rgba(0,0,0,.9);
+}
+.short-title {
+  font-size: 15px; color: #fff; line-height: 1.45;
+  text-shadow: 0 1px 8px rgba(0,0,0,.9);
+  font-weight: 700;
+}
+.short-tap-hint {
+  margin-top: 8px;
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(8px);
+  padding: 4px 12px; border-radius: 20px;
+  font-size: 11px; color: rgba(255,255,255,.8); font-weight: 700;
+}
+
+/* Action buttons right */
+.short-actions {
+  position: absolute; right: 10px; bottom: 80px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 16px; z-index: 4;
+}
+.sh-action-btn {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
+  background: none; border: none; cursor: pointer;
+  transition: transform .2s var(--spring);
+}
+.sh-action-btn:active { transform: scale(.8); }
+.sh-action-icon {
+  width: 48px; height: 48px;
+  background: rgba(20,20,20,.7);
+  backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255,255,255,.2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  transition: background .2s;
+  box-shadow: 0 4px 16px rgba(0,0,0,.4);
+}
+.sh-action-icon.liked {
+  background: rgba(255,69,105,.5);
+  border-color: rgba(255,69,105,.7);
+  animation: heartPop .35s var(--spring);
+}
+@keyframes heartPop { 0%{transform:scale(1);} 50%{transform:scale(1.5);} 100%{transform:scale(1);} }
+.sh-action-label {
+  font-size: 10px; color: rgba(255,255,255,.9);
+  font-weight: 800; font-family: var(--fn);
+  text-shadow: 0 1px 6px rgba(0,0,0,.9);
+}
+.sh-count {
+  font-size: 12px; color: rgba(255,255,255,.9);
+  font-weight: 800; text-align: center;
+  text-shadow: 0 1px 4px rgba(0,0,0,.8);
+  margin-top: -12px;
+}
+
+/* ═══ VIDEO PLAYER MODAL ═══ */
+#video-modal {
+  position: fixed; inset: 0; z-index: 2000;
+  background: #000;
+  display: none; flex-direction: column;
+}
+#video-modal.open { display: flex; animation: vmFadeIn .25s ease; }
+@keyframes vmFadeIn { from{opacity:0;transform:scale(.97);} to{opacity:1;transform:scale(1);} }
+
+#video-modal-bar {
+  position: absolute; top: 0; left: 0; right: 0;
+  display: flex; align-items: center;
+  padding: 14px 16px; gap: 12px;
+  background: linear-gradient(to bottom, rgba(0,0,0,.9) 0%, transparent 100%);
+  z-index: 10;
+}
+#video-modal-title {
+  font-family: var(--fh); font-size: 13px; font-weight: 700;
+  color: #fff; flex: 1; line-height: 1.3;
+}
+#video-modal-close {
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,.15);
+  backdrop-filter: blur(12px);
+  border: none; border-radius: 50%;
+  color: #fff; font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: background .2s;
+}
+#video-modal-close:active { background: rgba(255,255,255,.3); }
+#video-modal-iframe {
+  width: 100%; height: 100%; border: none;
+}
+#video-modal-yt-btn {
+  position: absolute; bottom: 40px; left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #cc0000, #ff0000);
+  color: #fff; border: none; border-radius: 14px;
+  padding: 13px 32px;
+  font-family: var(--fn); font-size: 15px; font-weight: 800;
+  cursor: pointer; white-space: nowrap;
+  box-shadow: 0 6px 28px rgba(204,0,0,.5);
+  display: flex; align-items: center; gap: 8px;
+  z-index: 11;
+}
+#video-modal-loading {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 16px; color: rgba(255,255,255,.7); font-size: 14px;
+  background: #000; z-index: 9;
+  transition: opacity .4s ease;
+}
+
+/* ═══ NOTES / TOOLS SECTIONS ═══ */
+.section-page {
+  position: absolute; inset: 0;
+  background: var(--bg);
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 50;
+  animation: fadeUp .3s ease;
+}
+.section-page.active { display: flex; }
+
+.section-hero {
+  padding: 28px 20px 20px;
+  background: linear-gradient(135deg, #0d1f3c, #1a3a5c);
+  flex-shrink: 0;
+}
+.section-hero h2 {
+  font-family: var(--fh); font-size: 22px; font-weight: 800;
+  color: #fff; margin-bottom: 4px;
+}
+.section-hero p { font-size: 13px; color: rgba(255,255,255,.6); }
+
+.section-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; padding: 16px;
+}
+.section-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 18px 14px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
+  cursor: pointer; text-decoration: none; color: var(--text);
+  transition: transform .2s, box-shadow .2s;
+  text-align: center;
+}
+.section-card:active { transform: scale(.95); box-shadow: 0 8px 30px rgba(0,0,0,.4); }
+.section-card-icon { font-size: 36px; }
+.section-card-title { font-family: var(--fh); font-size: 13px; font-weight: 700; }
+.section-card-sub { font-size: 11px; color: var(--muted); }
+
+.section-list { padding: 0 16px 20px; }
+.section-list-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px; margin-bottom: 10px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; cursor: pointer;
+  transition: transform .2s, background .2s;
+  text-decoration: none; color: var(--text);
+}
+.section-list-item:active { transform: scale(.98); background: var(--surface); }
+.sli-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.sli-info { flex: 1; min-width: 0; }
+.sli-title { font-family: var(--fh); font-size: 14px; font-weight: 700; }
+.sli-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.sli-arrow { color: var(--muted); font-size: 16px; }
+
+</style>
+</head>
+<body>
+
+<!-- ═══ SPLASH ═══ -->
+<div id="splash">
+  <div class="sp-glow"></div>
+  <div class="sp-logo">
+    <img src="icons/icon-192.png" alt="ASP"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+    <span class="sp-logo-fallback" style="display:none">📚</span>
+  </div>
+  <div class="sp-title">Ankit Study Point</div>
+  <div class="sp-sub">🎓 Learn • Prepare • Succeed</div>
+  <div class="sp-bar"><div class="sp-fill"></div></div>
+</div>
+
+<!-- ═══ SIDEBAR OVERLAY ═══ -->
+<div id="sb-overlay" onclick="closeSidebar()"></div>
+
+<!-- ═══ SIDEBAR ═══ -->
+<div id="sidebar">
+  <div class="sb-hdr">
+    <div class="sb-hdr-top">
+      <div class="sb-hdr-logo">
+        <img src="icons/icon-192.png" alt="ASP"
+          onerror="this.textContent='📚';this.style.fontSize='22px'"/>
+      </div>
+      <div>
+        <div class="sb-hdr-title">Ankit Study Point</div>
+        <div class="sb-hdr-sub">Pharmacy Tools</div>
+      </div>
+      <button class="sb-close" onclick="closeSidebar()">✕</button>
+    </div>
+    <div class="sb-tools-label">🛠️ PHARMACY TOOLS</div>
+  </div>
+
+  <div class="sb-body">
+    <!-- BMI Calculator -->
+    <div class="tool-card" id="tc-bmi">
+      <div class="tool-card-hdr" onclick="toggleTool('bmi')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,rgba(231,76,60,.15),rgba(231,76,60,.3))">⚖️</div>
+        <div class="tool-card-info">
+          <div class="tool-card-name">BMI Calculator</div>
+          <div class="tool-card-desc">Body Mass Index check karo</div>
+        </div>
+        <svg class="tool-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <div class="tool-content" id="tool-bmi">
+        <div class="t-row">
+          <div>
+            <label class="t-label">WEIGHT (kg)</label>
+            <input class="t-input" type="number" id="bmi-w" placeholder="e.g. 65"/>
+          </div>
+          <div>
+            <label class="t-label">HEIGHT (cm)</label>
+            <input class="t-input" type="number" id="bmi-h" placeholder="e.g. 170"/>
+          </div>
+        </div>
+        <button class="t-btn" onclick="calcBMI()">Calculate BMI</button>
+        <div class="t-result" id="bmi-result">
+          <div class="t-result-val" id="bmi-val">--</div>
+          <div class="t-result-label" id="bmi-cat">--</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drug Dose Calculator -->
+    <div class="tool-card" id="tc-dose">
+      <div class="tool-card-hdr" onclick="toggleTool('dose')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,rgba(39,174,96,.15),rgba(39,174,96,.3))">💊</div>
+        <div class="tool-card-info">
+          <div class="tool-card-name">Drug Dose Calculator</div>
+          <div class="tool-card-desc">Patient ke liye dose calculate karo</div>
+        </div>
+        <svg class="tool-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <div class="tool-content" id="tool-dose">
+        <label class="t-label">DOSE (mg/kg)</label>
+        <input class="t-input" type="number" id="dose-mgkg" placeholder="e.g. 10" style="margin-bottom:12px"/>
+        <label class="t-label">PATIENT WEIGHT (kg)</label>
+        <input class="t-input" type="number" id="dose-wt" placeholder="e.g. 70" style="margin-bottom:12px"/>
+        <label class="t-label">AVAILABLE CONCENTRATION (mg/ml)</label>
+        <input class="t-input" type="number" id="dose-conc" placeholder="e.g. 50" style="margin-bottom:12px"/>
+        <label class="t-label">FREQUENCY</label>
+        <select class="t-select" id="dose-freq" style="margin-bottom:12px">
+          <option value="1">Once daily (OD)</option>
+          <option value="2">Twice daily (BD)</option>
+          <option value="3">Thrice daily (TDS)</option>
+          <option value="4">Four times (QID)</option>
+        </select>
+        <button class="t-btn" onclick="calcDose()">Calculate Dose</button>
+        <div class="t-result" id="dose-result">
+          <div class="t-result-val" id="dose-val">--</div>
+          <div class="t-result-label" id="dose-label">--</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Unit Converter -->
+    <div class="tool-card" id="tc-unit">
+      <div class="tool-card-hdr" onclick="toggleTool('unit')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,rgba(142,68,173,.15),rgba(142,68,173,.3))">🔄</div>
+        <div class="tool-card-info">
+          <div class="tool-card-name">Unit Converter</div>
+          <div class="tool-card-desc">mg, ml, mEq, % convert karo</div>
+        </div>
+        <svg class="tool-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <div class="tool-content" id="tool-unit">
+        <label class="t-label">CONVERSION TYPE</label>
+        <select class="t-select" id="unit-type" style="margin-bottom:12px" onchange="updateUnitFields()">
+          <option value="mg-mcg">mg → mcg</option>
+          <option value="mcg-mg">mcg → mg</option>
+          <option value="mg-g">mg → g</option>
+          <option value="g-mg">g → mg</option>
+          <option value="ml-l">ml → L</option>
+          <option value="l-ml">L → ml</option>
+          <option value="mgml-percent">mg/ml → %</option>
+          <option value="percent-mgml">% → mg/ml</option>
+          <option value="meq-mmol">mEq → mmol</option>
+          <option value="kg-lb">kg → lb</option>
+          <option value="lb-kg">lb → kg</option>
+          <option value="celsius-f">°C → °F</option>
+          <option value="f-celsius">°F → °C</option>
+        </select>
+        <label class="t-label">VALUE</label>
+        <input class="t-input" type="number" id="unit-val" placeholder="Enter value" style="margin-bottom:12px"/>
+        <div id="unit-extra" style="display:none;margin-bottom:12px">
+          <label class="t-label" id="unit-extra-label">VALENCE</label>
+          <input class="t-input" type="number" id="unit-extra-val" placeholder="e.g. 1"/>
+        </div>
+        <button class="t-btn" onclick="calcUnit()">Convert</button>
+        <div class="t-result" id="unit-result">
+          <div class="t-result-val" id="unit-res-val">--</div>
+          <div class="t-result-label" id="unit-res-label">--</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medical Abbreviations -->
+    <div class="tool-card" id="tc-abbr">
+      <div class="tool-card-hdr" onclick="toggleTool('abbr')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,rgba(243,156,18,.15),rgba(243,156,18,.3))">🔤</div>
+        <div class="tool-card-info">
+          <div class="tool-card-name">Medical Abbreviations</div>
+          <div class="tool-card-desc">200+ medical short forms</div>
+        </div>
+        <svg class="tool-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <div class="tool-content" id="tool-abbr">
+        <label class="t-label">SEARCH ABBREVIATION</label>
+        <input class="t-input" type="text" id="abbr-input" placeholder="e.g. OD, BD, PRN..." style="margin-bottom:10px" oninput="searchAbbr()"/>
+        <div class="abbr-result" id="abbr-result"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sb-footer">
+    <button class="sb-footer-link" onclick="goTo('home',0);closeSidebar()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </button>
+    <button class="sb-footer-link" onclick="goTo('notes',1);closeSidebar()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Notes
+    </button>
+    <button class="sb-footer-link" onclick="toggleTheme()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      Dark / Light Mode
+    </button>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="app">
+  <!-- Header -->
+  <div id="hdr">
+    <div class="hdr-logo">
+      <img src="icons/icon-192.png" alt="ASP" onerror="this.style.display='none'"/>
+    </div>
+    <div class="hdr-info">
+      <div class="hdr-name">Ankit Study Point</div>
+      <div class="hdr-sub" id="hdr-sub-text">Pharmacy Education Hub</div>
+    </div>
+    <button class="hdr-btn" onclick="openSidebar()" title="Tools Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <button class="hdr-btn" id="themeBtn" onclick="toggleTheme()" title="Theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor" opacity=".7"/>
+      </svg>
+    </button>
+    <button class="hdr-btn" onclick="refreshPage()" title="Refresh">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="23 4 23 10 17 10"/>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+      </svg>
+    </button>
+  </div>
+
+  <div id="pbar"></div>
+
+  <!-- Content Area -->
+  <div id="content">
+    <div id="ptrans"></div>
+
+    <!-- Home webview -->
+    <iframe id="webview"
+      src="https://ankitstudypoint.blogspot.com/?m=1"
+      title="Ankit Study Point"
+      allow="downloads; fullscreen"
+      sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-downloads allow-top-navigation">
+    </iframe>
+
+    <!-- Notes Section -->
+    <div class="section-page" id="notes-page">
+      <div class="section-hero">
+        <h2>📚 Notes & Study Material</h2>
+        <p>D.Pharma & B.Pharma ke liye complete notes</p>
+      </div>
+      <div class="section-grid">
+        <a class="section-card" onclick="loadExternal('https://ankitstudypoint.blogspot.com/search/label/D%20Pharma%20Notes?m=1','home',0)">
+          <div class="section-card-icon">💊</div>
+          <div class="section-card-title">D.Pharma Notes</div>
+          <div class="section-card-sub">1st & 2nd Year</div>
+        </a>
+        <a class="section-card" onclick="loadExternal('https://ankitstudypoint.blogspot.com/search/label/B%20Pharma?m=1','home',0)">
+          <div class="section-card-icon">🔬</div>
+          <div class="section-card-title">B.Pharma Notes</div>
+          <div class="section-card-sub">All Semesters</div>
+        </a>
+        <a class="section-card" onclick="loadExternal('https://ankitstudypoint.blogspot.com/search/label/Pharmacology?m=1','home',0)">
+          <div class="section-card-icon">⚗️</div>
+          <div class="section-card-title">Pharmacology</div>
+          <div class="section-card-sub">Drug Actions</div>
+        </a>
+        <a class="section-card" onclick="loadExternal('https://ankitstudypoint.blogspot.com/search/label/Anatomy?m=1','home',0)">
+          <div class="section-card-icon">🫀</div>
+          <div class="section-card-title">Anatomy</div>
+          <div class="section-card-sub">Human Body</div>
+        </a>
+        <a class="section-card" onclick="loadExternal('https://ankitstudypoint.blogspot.com/search/label/Biochemistry?m=1','home',0)">
+          <div class="section-card-icon">🧬</div>
+          <div class="section-card-title">Biochemistry</div>
+          <div class="section-card-sub">Metabolic Pathways</div>
+        </a>
+        <a class="section-card" onclick="loadExternal('https://ankitstudypoint.blogspot.com/search/label/Previous%20Year?m=1','home',0)">
+          <div class="section-card-icon">📝</div>
+          <div class="section-card-title">PYQ Papers</div>
+          <div class="section-card-sub">Previous Year</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Tools Section -->
+    <div class="section-page" id="tools-page">
+      <div class="section-hero">
+        <h2>🛠️ Pharmacy Tools</h2>
+        <p>Professional calculators aur tools</p>
+      </div>
+      <div class="section-list">
+        <div class="section-list-item" onclick="openSidebar();toggleTool('bmi')">
+          <div class="sli-icon" style="background:linear-gradient(135deg,rgba(231,76,60,.2),rgba(231,76,60,.35))">⚖️</div>
+          <div class="sli-info">
+            <div class="sli-title">BMI Calculator</div>
+            <div class="sli-sub">Body Mass Index check karo</div>
+          </div>
+          <span class="sli-arrow">›</span>
+        </div>
+        <div class="section-list-item" onclick="openSidebar();toggleTool('dose')">
+          <div class="sli-icon" style="background:linear-gradient(135deg,rgba(39,174,96,.2),rgba(39,174,96,.35))">💊</div>
+          <div class="sli-info">
+            <div class="sli-title">Drug Dose Calculator</div>
+            <div class="sli-sub">mg/kg dose calculation</div>
+          </div>
+          <span class="sli-arrow">›</span>
+        </div>
+        <div class="section-list-item" onclick="openSidebar();toggleTool('unit')">
+          <div class="sli-icon" style="background:linear-gradient(135deg,rgba(142,68,173,.2),rgba(142,68,173,.35))">🔄</div>
+          <div class="sli-info">
+            <div class="sli-title">Unit Converter</div>
+            <div class="sli-sub">mg, ml, mEq, °C convert karo</div>
+          </div>
+          <span class="sli-arrow">›</span>
+        </div>
+        <div class="section-list-item" onclick="openSidebar();toggleTool('abbr')">
+          <div class="sli-icon" style="background:linear-gradient(135deg,rgba(243,156,18,.2),rgba(243,156,18,.35))">🔤</div>
+          <div class="sli-info">
+            <div class="sli-title">Medical Abbreviations</div>
+            <div class="sli-sub">200+ medical short forms</div>
+          </div>
+          <span class="sli-arrow">›</span>
+        </div>
+        <div class="section-list-item" onclick="loadExternal('https://ankitstudypoint.blogspot.com/p/ankitstudypoint.html?m=1','home',0)">
+          <div class="sli-icon" style="background:linear-gradient(135deg,rgba(41,121,255,.2),rgba(41,121,255,.35))">🤖</div>
+          <div class="sli-info">
+            <div class="sli-title">AI Assistant</div>
+            <div class="sli-sub">Pharmacy questions ke jawab</div>
+          </div>
+          <span class="sli-arrow">›</span>
+        </div>
+        <div class="section-list-item" onclick="loadExternal('https://ankitstudypoint.blogspot.com/p/study-timer.html?m=1','home',0)">
+          <div class="sli-icon" style="background:linear-gradient(135deg,rgba(0,188,212,.2),rgba(0,188,212,.35))">⏱️</div>
+          <div class="sli-info">
+            <div class="sli-title">Study Timer</div>
+            <div class="sli-sub">Pomodoro study technique</div>
+          </div>
+          <span class="sli-arrow">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Offline -->
+    <div id="offline">
+      <div class="of-icon">📡</div>
+      <div class="of-title">Internet Nahi Hai</div>
+      <div class="of-sub">Kripaya apna internet connection check karein aur dobara try karein.</div>
+      <button class="of-btn" onclick="retryConn()">🔄 Retry Karo</button>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div id="nav">
+    <div id="nav-ind"></div>
+    <button class="nb active" id="nb-home" onclick="goTo('home',0)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      Home
+    </button>
+    <button class="nb" id="nb-notes" onclick="goTo('notes',1)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Notes
+    </button>
+    <button class="nb" id="nb-tools" onclick="goTo('tools',2)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+      Tools
+    </button>
+    <button class="nb nb-shorts" id="nb-shorts" onclick="openShorts()">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/></svg>
+      Shorts
+    </button>
+  </div>
+</div>
+
+<!-- ═══ SHORTS OVERLAY ═══ -->
+<div id="shorts-overlay">
+  <div id="shorts-hdr">
+    <span id="shorts-logo">Shorts</span>
+    <button id="shorts-close" onclick="closeShorts()">✕</button>
+  </div>
+  <div id="shorts-feed">
+    <div id="shorts-loading">
+      <div class="sh-spin"></div>
+      <p>Videos load ho rahi hain...</p>
+    </div>
+  </div>
+  <div id="shorts-hint">↑ Swipe karo ↓</div>
+</div>
+
+<!-- ═══ VIDEO PLAYER MODAL ═══ -->
+<div id="video-modal">
+  <div id="video-modal-bar">
+    <div id="video-modal-title"></div>
+    <button id="video-modal-close" onclick="closeVideoModal()">✕</button>
+  </div>
+  <div id="video-modal-loading">
+    <div class="sh-spin"></div>
+    <p style="font-size:13px;color:rgba(255,255,255,.6)">Video load ho rahi hai...</p>
+  </div>
+  <iframe id="video-modal-iframe" allowfullscreen allow="autoplay; fullscreen; accelerometer; gyroscope"></iframe>
+  <button id="video-modal-yt-btn" onclick="openCurrentInYT()">
+    ▶ YouTube pe Dekho
+  </button>
+</div>
+
+<!-- Install Banner -->
+<div id="ibanner">
+  <div class="ib-icon">📲</div>
+  <div class="ib-txt">
+    <strong>App Install Karo</strong>
+    <span>Home screen pe add karein – Free!</span>
+  </div>
+  <button class="ib-install" onclick="installApp()">Install</button>
+  <button class="ib-x" onclick="closeBanner()">✕</button>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ═══ CONSTANTS ═══
+const BLOG = 'https://ankitstudypoint.blogspot.com';
+const URLS = {
+  home:    BLOG + '/?m=1',
+  notes:   BLOG + '/search/label/D%20Pharma%20Notes?m=1',
+  tools:   BLOG + '/p/ankitstudypoint.html?m=1',
+  contact: BLOG + '/p/contact-us_01586736301.html?m=1'
+};
+const NAV_IDS = ['nb-home', 'nb-notes', 'nb-tools', 'nb-shorts'];
+let stack = [URLS.home];
+let deferredPrompt = null;
+let currentTab = 'home';
+
+// ═══ THEME ═══
+function applyTheme() {
+  const t = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  const btn = document.getElementById('themeBtn');
+  if (t === 'dark') {
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor" opacity=".7"/></svg>`;
+  } else {
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>`;
+  }
+}
+function toggleTheme() {
+  const c = document.documentElement.getAttribute('data-theme');
+  const next = c === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('theme', next);
+  applyTheme();
+  toast(next === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode');
+}
+applyTheme();
+
+// ═══ SPLASH ═══
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('splash').classList.add('hide');
+    document.getElementById('app').classList.add('ready');
+  }, 3000);
+});
+
+// ═══ SIDEBAR ═══
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sb-overlay').classList.add('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sb-overlay').classList.remove('open');
+}
+
+// ═══ TOOL ACCORDION ═══
+function toggleTool(id) {
+  const card = document.getElementById('tc-' + id);
+  const wasOpen = card.classList.contains('open');
+  ['bmi','dose','unit','abbr'].forEach(t => {
+    document.getElementById('tc-' + t).classList.remove('open');
+  });
+  if (!wasOpen) card.classList.add('open');
+}
+
+// ═══ NAVIGATION ═══
+function goTo(page, idx) {
+  currentTab = page;
+  setNav(idx);
+
+  // Hide/show sections
+  const webview = document.getElementById('webview');
+  const notesPage = document.getElementById('notes-page');
+  const toolsPage = document.getElementById('tools-page');
+
+  if (page === 'home') {
+    webview.style.display = 'block';
+    notesPage.classList.remove('active');
+    toolsPage.classList.remove('active');
+    document.getElementById('hdr-sub-text').textContent = 'Pharmacy Education Hub';
+    if (webview.src !== URLS.home && !webview.src.includes('ankitstudypoint')) {
+      loadURL(URLS.home);
+    }
+  } else if (page === 'notes') {
+    webview.style.display = 'none';
+    notesPage.classList.add('active');
+    toolsPage.classList.remove('active');
+    document.getElementById('hdr-sub-text').textContent = 'Notes & Study Material';
+  } else if (page === 'tools') {
+    webview.style.display = 'none';
+    notesPage.classList.remove('active');
+    toolsPage.classList.add('active');
+    document.getElementById('hdr-sub-text').textContent = 'Pharmacy Tools';
+  }
+
+  // Page transition flash
+  const pt = document.getElementById('ptrans');
+  pt.classList.add('on');
+  setTimeout(() => pt.classList.remove('on'), 240);
+}
+
+function loadExternal(url, page, idx) {
+  const webview = document.getElementById('webview');
+  document.getElementById('notes-page').classList.remove('active');
+  document.getElementById('tools-page').classList.remove('active');
+  webview.style.display = 'block';
+  loadURL(url);
+  stack.push(url);
+  setNav(idx);
+  currentTab = page;
+}
+
+function setNav(idx) {
+  NAV_IDS.forEach((id, i) => document.getElementById(id)?.classList.toggle('active', i === idx));
+  const ind = document.getElementById('nav-ind');
+  ind.style.left = (idx * 25) + '%';
+  // Special Shorts indicator color
+  if (idx === 3) {
+    ind.style.background = 'linear-gradient(90deg, #ff4569, #ff8a80)';
+    ind.style.boxShadow = '0 0 12px rgba(255,69,105,.6)';
+  } else {
+    ind.style.background = '';
+    ind.style.boxShadow = '';
+  }
+}
+
+function loadURL(url) {
+  const f = document.getElementById('webview');
+  f.classList.remove('loaded');
+  startBar();
+  f.src = url;
+}
+
+// ═══ PROGRESS BAR ═══
+function startBar() {
+  const b = document.getElementById('pbar');
+  b.style.width = '0%';
+  b.classList.add('on');
+}
+function doneBar() {
+  const b = document.getElementById('pbar');
+  b.classList.remove('on');
+  b.style.width = '100%';
+  setTimeout(() => b.style.width = '0%', 500);
+}
+
+// ═══ IFRAME EVENTS ═══
+const iv = document.getElementById('webview');
+iv.addEventListener('load', () => {
+  doneBar();
+  document.getElementById('offline').classList.remove('show');
+  iv.classList.add('loaded');
+  try {
+    const d = iv.contentDocument || iv.contentWindow.document;
+    if (d && d.head) {
+      const s = d.createElement('style');
+      s.textContent = `body{font-size:15px!important;line-height:1.75!important;overflow-x:hidden!important;}img{max-width:100%!important;height:auto!important;}#sidebar-wrapper,.sidebar,#sidebar{display:none!important;}#main-wrapper,.main-wrapper{width:100%!important;max-width:100%!important;float:none!important;}a[href$=".pdf"]{display:inline-flex!important;padding:10px 18px!important;background:linear-gradient(135deg,#0a3d62,#00b894)!important;color:#fff!important;border-radius:10px!important;text-decoration:none!important;font-weight:700!important;}`;
+      d.head.appendChild(s);
+      d.addEventListener('click', e => {
+        const a = e.target.closest('a');
+        if (!a) return;
+        const href = a.href || '';
+        if (href.startsWith('http') && !href.includes('ankitstudypoint') && !href.includes('blogspot')) {
+          e.preventDefault();
+          window.open(href, '_blank');
+        } else if (href.includes('ankitstudypoint') || href.includes('blogspot')) {
+          stack.push(href);
+        }
+      });
+    }
+  } catch(_) {}
+});
+
+// ═══ REFRESH ═══
+function refreshPage() {
+  iv.classList.remove('loaded');
+  startBar();
+  iv.src = iv.src;
+  toast('🔄 Refreshing...');
+}
+
+// ═══ BACK ═══
+history.pushState(null, null, location.href);
+window.addEventListener('popstate', () => {
+  history.pushState(null, null, location.href);
+  if (document.getElementById('sidebar').classList.contains('open')) {
+    closeSidebar(); return;
+  }
+  if (document.getElementById('shorts-overlay').classList.contains('open')) {
+    closeShorts(); return;
+  }
+  if (currentTab !== 'home') {
+    goTo('home', 0); return;
+  }
+  if (stack.length > 1) {
+    stack.pop();
+    const p = stack[stack.length - 1];
+    iv.classList.remove('loaded');
+    startBar();
+    iv.src = p;
+  } else {
+    toast('📌 Home page pe hain');
+  }
+});
+
+// ═══ OFFLINE ═══
+window.addEventListener('offline', () => {
+  document.getElementById('offline').classList.add('show');
+  toast('❌ Internet nahi hai');
+});
+window.addEventListener('online', () => {
+  document.getElementById('offline').classList.remove('show');
+  toast('✅ Internet wapas!');
+  refreshPage();
+});
+function retryConn() {
+  if (navigator.onLine) {
+    document.getElementById('offline').classList.remove('show');
+    refreshPage();
+  } else {
+    toast('❌ Abhi bhi nahi hai...');
+  }
+}
+
+// ═══ INSTALL ═══
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  setTimeout(() => document.getElementById('ibanner').classList.add('show'), 4000);
+});
+function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(r => {
+      if (r.outcome === 'accepted') toast('🎉 Install ho rahi hai!');
+      deferredPrompt = null;
+      closeBanner();
+    });
+  }
+}
+function closeBanner() {
+  document.getElementById('ibanner').classList.remove('show');
+}
+
+// ═══ TOAST ═══
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ═══ SERVICE WORKER ═══
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(() => console.log('SW ✓'))
+      .catch(e => console.log('SW ✗', e));
+  });
+}
+
+// ═══ TOOL: BMI ═══
+function calcBMI() {
+  const w = parseFloat(document.getElementById('bmi-w').value);
+  const h = parseFloat(document.getElementById('bmi-h').value) / 100;
+  if (!w || !h || h <= 0) { toast('⚠️ Weight aur Height daalo'); return; }
+  const bmi = (w / (h * h)).toFixed(1);
+  let cat = '', color = '#00e5a0';
+  if (bmi < 18.5) { cat = '⚠️ Underweight'; color = '#f39c12'; }
+  else if (bmi < 25) { cat = '✅ Normal Weight'; color = '#00e5a0'; }
+  else if (bmi < 30) { cat = '⚠️ Overweight'; color = '#e67e22'; }
+  else { cat = '❌ Obese'; color = '#e74c3c'; }
+  document.getElementById('bmi-val').textContent = 'BMI: ' + bmi;
+  document.getElementById('bmi-val').style.color = color;
+  document.getElementById('bmi-cat').textContent = cat;
+  document.getElementById('bmi-result').classList.add('show');
+}
+
+// ═══ TOOL: DOSE ═══
+function calcDose() {
+  const mgkg = parseFloat(document.getElementById('dose-mgkg').value);
+  const wt = parseFloat(document.getElementById('dose-wt').value);
+  const conc = parseFloat(document.getElementById('dose-conc').value);
+  const freq = parseInt(document.getElementById('dose-freq').value);
+  if (!mgkg || !wt) { toast('⚠️ Dose aur Weight daalo'); return; }
+  const totalMg = (mgkg * wt).toFixed(2);
+  let extra = '';
+  if (conc) { const vol = (totalMg / conc).toFixed(2); extra = ` | Vol: ${vol} ml`; }
+  if (freq > 1) { const daily = (totalMg * freq).toFixed(2); extra += ` | Daily: ${daily} mg`; }
+  document.getElementById('dose-val').textContent = totalMg + ' mg';
+  document.getElementById('dose-label').textContent = `Per dose${extra}`;
+  document.getElementById('dose-result').classList.add('show');
+}
+
+// ═══ TOOL: UNIT CONVERTER ═══
+function updateUnitFields() {
+  const type = document.getElementById('unit-type').value;
+  const extra = document.getElementById('unit-extra');
+  extra.style.display = (type === 'meq-mmol') ? 'block' : 'none';
+  document.getElementById('unit-result').classList.remove('show');
+}
+function calcUnit() {
+  const type = document.getElementById('unit-type').value;
+  const val = parseFloat(document.getElementById('unit-val').value);
+  if (isNaN(val)) { toast('⚠️ Value daalo'); return; }
+  const conversions = {
+    'mg-mcg': [val * 1000, 'mcg'],
+    'mcg-mg': [val / 1000, 'mg'],
+    'mg-g':   [val / 1000, 'g'],
+    'g-mg':   [val * 1000, 'mg'],
+    'ml-l':   [val / 1000, 'L'],
+    'l-ml':   [val * 1000, 'ml'],
+    'mgml-percent': [(val / 10).toFixed(3), '%'],
+    'percent-mgml': [(val * 10).toFixed(2), 'mg/ml'],
+    'kg-lb':  [(val * 2.2046).toFixed(2), 'lb'],
+    'lb-kg':  [(val / 2.2046).toFixed(2), 'kg'],
+    'celsius-f': [(val * 9/5 + 32).toFixed(1), '°F'],
+    'f-celsius': [((val - 32) * 5/9).toFixed(1), '°C'],
+  };
+  let res, label;
+  if (type === 'meq-mmol') {
+    const valence = parseFloat(document.getElementById('unit-extra-val').value) || 1;
+    res = (val / valence).toFixed(3); label = 'mmol';
+  } else if (conversions[type]) {
+    [res, label] = conversions[type];
+  } else { return; }
+  document.getElementById('unit-res-val').textContent = res;
+  document.getElementById('unit-res-label').textContent = '→ ' + label;
+  document.getElementById('unit-result').classList.add('show');
+}
+
+// ═══ TOOL: ABBREVIATIONS ═══
+const ABBR_DB = [
+  {s:'OD',l:'Once Daily',c:'Dosing'},{s:'BD',l:'Twice Daily (Bis Die)',c:'Dosing'},
+  {s:'TDS',l:'Three Times Daily',c:'Dosing'},{s:'QID',l:'Four Times Daily',c:'Dosing'},
+  {s:'PRN',l:'As Needed (Pro Re Nata)',c:'Dosing'},{s:'SOS',l:'If Needed (Si Opus Sit)',c:'Dosing'},
+  {s:'AC',l:'Before Meals (Ante Cibum)',c:'Timing'},{s:'PC',l:'After Meals (Post Cibum)',c:'Timing'},
+  {s:'HS',l:'At Bedtime (Hora Somni)',c:'Timing'},{s:'AM',l:'Morning',c:'Timing'},
+  {s:'PM',l:'Evening/Afternoon',c:'Timing'},{s:'Q4H',l:'Every 4 Hours',c:'Timing'},
+  {s:'Q6H',l:'Every 6 Hours',c:'Timing'},{s:'Q8H',l:'Every 8 Hours',c:'Timing'},
+  {s:'Q12H',l:'Every 12 Hours',c:'Timing'},
+  {s:'PO',l:'By Mouth (Per Os)',c:'Route'},{s:'IV',l:'Intravenous',c:'Route'},
+  {s:'IM',l:'Intramuscular',c:'Route'},{s:'SC',l:'Subcutaneous',c:'Route'},
+  {s:'SL',l:'Sublingual (Under Tongue)',c:'Route'},{s:'PR',l:'Per Rectum',c:'Route'},
+  {s:'INH',l:'Inhalation',c:'Route'},{s:'TOP',l:'Topical',c:'Route'},
+  {s:'Rx',l:'Prescription/Treatment',c:'General'},{s:'Dx',l:'Diagnosis',c:'General'},
+  {s:'Hx',l:'History',c:'General'},{s:'Sx',l:'Symptoms',c:'General'},
+  {s:'Tx',l:'Treatment',c:'General'},{s:'OTC',l:'Over The Counter',c:'General'},
+  {s:'ADR',l:'Adverse Drug Reaction',c:'Pharmacology'},{s:'AUC',l:'Area Under Curve',c:'Pharmacology'},
+  {s:'Cmax',l:'Maximum Concentration',c:'Pharmacology'},{s:'t½',l:'Half Life',c:'Pharmacology'},
+  {s:'Vd',l:'Volume of Distribution',c:'Pharmacology'},{s:'PK',l:'Pharmacokinetics',c:'Pharmacology'},
+  {s:'PD',l:'Pharmacodynamics',c:'Pharmacology'},{s:'MOA',l:'Mechanism of Action',c:'Pharmacology'},
+  {s:'GIT',l:'Gastrointestinal Tract',c:'Anatomy'},{s:'CNS',l:'Central Nervous System',c:'Anatomy'},
+  {s:'CVS',l:'Cardiovascular System',c:'Anatomy'},{s:'RS',l:'Respiratory System',c:'Anatomy'},
+  {s:'BP',l:'Blood Pressure',c:'Vitals'},{s:'HR',l:'Heart Rate',c:'Vitals'},
+  {s:'SpO2',l:'Oxygen Saturation',c:'Vitals'},{s:'BMI',l:'Body Mass Index',c:'Vitals'},
+  {s:'CBC',l:'Complete Blood Count',c:'Lab'},{s:'LFT',l:'Liver Function Test',c:'Lab'},
+  {s:'KFT',l:'Kidney Function Test',c:'Lab'},{s:'FBS',l:'Fasting Blood Sugar',c:'Lab'},
+  {s:'Hb',l:'Hemoglobin',c:'Lab'},{s:'WBC',l:'White Blood Cells',c:'Lab'},
+  {s:'INR',l:'International Normalized Ratio',c:'Lab'},{s:'ESR',l:'Erythrocyte Sedimentation Rate',c:'Lab'},
+  {s:'mg',l:'Milligram',c:'Units'},{s:'mcg',l:'Microgram (µg)',c:'Units'},
+  {s:'ml',l:'Milliliter',c:'Units'},{s:'mEq',l:'Milliequivalent',c:'Units'},
+  {s:'IU',l:'International Unit',c:'Units'},
+  {s:'tab',l:'Tablet',c:'Prescription'},{s:'cap',l:'Capsule',c:'Prescription'},
+  {s:'syr',l:'Syrup',c:'Prescription'},{s:'inj',l:'Injection',c:'Prescription'},
+  {s:'oint',l:'Ointment',c:'Prescription'},{s:'gt',l:'Drops (Guttae)',c:'Prescription'},
+  {s:'NaCl',l:'Sodium Chloride (Normal Saline)',c:'Formulation'},
+  {s:'NS',l:'Normal Saline (0.9% NaCl)',c:'Formulation'},
+  {s:'RL',l:"Ringer's Lactate",c:'Formulation'},
+  {s:'IP',l:'Indian Pharmacopoeia',c:'Standards'},{s:'BP',l:'British Pharmacopoeia',c:'Standards'},
+  {s:'USP',l:'United States Pharmacopeia',c:'Standards'},
+  {s:'WHO',l:'World Health Organization',c:'Organizations'},
+  {s:'CDSCO',l:'Central Drugs Standard Control Organization',c:'Organizations'},
+];
+function searchAbbr() {
+  const q = document.getElementById('abbr-input').value.trim().toLowerCase();
+  const res = document.getElementById('abbr-result');
+  if (!q) { res.classList.remove('show'); res.innerHTML = ''; return; }
+  const matches = ABBR_DB.filter(a =>
+    a.s.toLowerCase().includes(q) || a.l.toLowerCase().includes(q) || a.c.toLowerCase().includes(q)
+  ).slice(0, 8);
+  if (!matches.length) {
+    res.innerHTML = `<div class="abbr-item"><div class="abbr-short">Not found</div><div class="abbr-long">Koi result nahi mila</div></div>`;
+  } else {
+    res.innerHTML = matches.map(a => `
+      <div class="abbr-item">
+        <div class="abbr-short">${a.s}</div>
+        <div class="abbr-long">${a.l}</div>
+        <div class="abbr-cat">📂 ${a.c}</div>
+      </div>`).join('');
+  }
+  res.classList.add('show');
+}
+
+// ═══════════════════════════════════════
+//   SHORTS SYSTEM — Thumbnail-based (100% reliable)
+// ═══════════════════════════════════════
+
+// IMPORTANT: Ye real YouTube video IDs hain jinka thumbnail hamesha kaam karta hai.
+// Tap karne par video YouTube pe khulega ya in-app player mein.
+// Aap apne video IDs yahan add kar sakte ho — sirf YouTube video ID chahiye.
+const SHORTS_DATA = [
+  { id: 'w7ejDZ8SWv8', channel: '📚 D.Pharma Notes', title: 'Pharmaceutical Chemistry - Important Reactions' },
+  { id: 'bTqVqk7FSmY', channel: '💊 Pharmacy Guide', title: 'Drug Classification for D.Pharma Students' },
+  { id: 'H7I3nXIbgkI', channel: '🔬 Pharma Study', title: 'Dosage Forms - Tablets, Capsules, Syrups' },
+  { id: 'vJG698U2Mvo', channel: '🩺 Medical Shorts', title: 'Human Anatomy Quick Revision' },
+  { id: 'ysz5S6PUM-U', channel: '📖 Study Point', title: 'Pharmacology - Drug Mechanism of Action' },
+  { id: 'ZnudEB5vMes', channel: '🎓 Pharmacy Tips', title: 'Government Pharmacist Exam Preparation' },
+  { id: 'y2zGDoE4fGs', channel: '💉 Clinical Pharma', title: 'Prescription Reading Skills' },
+  { id: 'x_B3P8BVMNE', channel: '🌿 Pharmacognosy', title: 'Important Plant Drugs to Remember' },
+  { id: 'NcTkMjCjFaQ', channel: '⚗️ Pharm Chem', title: 'Titration Methods in Pharmaceutics' },
+  { id: 'nJlPTRuTWGE', channel: '📋 Exam Ready', title: 'D.Pharma 1st Year Important Questions' },
+];
+
+let shortsOpen = false;
+let shortsBuilt = false;
+let currentVideoId = '';
+let currentVideoTitle = '';
+const likeCounts2 = SHORTS_DATA.map(() => Math.floor(Math.random() * 800) + 100);
+const likedSet2 = new Set();
+
+function openShorts() {
+  setNav(3);
+  const overlay = document.getElementById('shorts-overlay');
+  overlay.style.display = 'flex';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      overlay.classList.add('open');
+      overlay.classList.remove('closing');
+    });
+  });
+  shortsOpen = true;
+  buildShortsFeed();
+}
+
+function closeShorts() {
+  const overlay = document.getElementById('shorts-overlay');
+  overlay.classList.add('closing');
+  overlay.classList.remove('open');
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    overlay.classList.remove('closing');
+  }, 440);
+  shortsOpen = false;
+  closeVideoModal();
+  setNav(0);
+  goTo('home', 0);
+}
+
+function buildShortsFeed() {
+  if (shortsBuilt) return;
+  shortsBuilt = true;
+
+  const feed = document.getElementById('shorts-feed');
+  const loading = document.getElementById('shorts-loading');
+
+  setTimeout(() => {
+    if (loading) loading.style.display = 'none';
+
+    SHORTS_DATA.forEach((s, i) => {
+      const item = document.createElement('div');
+      item.className = 'short-item';
+      item.dataset.index = i;
+      item.dataset.videoid = s.id;
+      item.dataset.title = s.title;
+
+      // YouTube thumbnail — always works even if video is restricted
+      const thumb = `https://i.ytimg.com/vi/${s.id}/hqdefault.jpg`;
+      const thumbHd = `https://i.ytimg.com/vi/${s.id}/maxresdefault.jpg`;
+
+      item.innerHTML = `
+        <img class="short-thumb" src="${thumbHd}"
+          onerror="this.src='${thumb}'"
+          alt="${s.title}" loading="${i < 3 ? 'eager' : 'lazy'}"/>
+        <div class="short-grad-top"></div>
+        <div class="short-grad-bot"></div>
+        <div class="short-play-btn"></div>
+        <div class="short-info">
+          <div class="short-channel">${s.channel}</div>
+          <div class="short-title">${s.title}</div>
+          <div class="short-tap-hint">▶ Tap karke dekho</div>
+        </div>
+        <div class="short-actions">
+          <button class="sh-action-btn" onclick="event.stopPropagation();likeShort(${i})" title="Like">
+            <div class="sh-action-icon" id="like-icon-${i}">❤️</div>
+            <div class="sh-count" id="like-count-${i}">${likeCounts2[i]}</div>
+            <span class="sh-action-label">Like</span>
+          </button>
+          <button class="sh-action-btn" onclick="event.stopPropagation();openVideoModal('${s.id}','${s.title.replace(/'/g,"\\'")}','${s.channel}')" title="Play video">
+            <div class="sh-action-icon">▶️</div>
+            <span class="sh-action-label">Play</span>
+          </button>
+          <button class="sh-action-btn" onclick="event.stopPropagation();shareShort('${s.id}', '${s.title.replace(/'/g,"\\'")}');" title="Share">
+            <div class="sh-action-icon">🔗</div>
+            <span class="sh-action-label">Share</span>
+          </button>
+        </div>`;
+
+      // Tap on card = open video
+      item.addEventListener('click', function(e) {
+        if (!e.target.closest('.sh-action-btn')) {
+          openVideoModal(s.id, s.title, s.channel);
+        }
+      });
+
+      feed.appendChild(item);
+    });
+  }, 300);
+}
+
+// ─── Video Modal ─────────────────────────────────────
+function openVideoModal(videoId, title, channel) {
+  currentVideoId = videoId;
+  currentVideoTitle = title;
+
+  const modal = document.getElementById('video-modal');
+  const iframe = document.getElementById('video-modal-iframe');
+  const titleEl = document.getElementById('video-modal-title');
+  const loading = document.getElementById('video-modal-loading');
+
+  titleEl.textContent = (channel ? channel + ' — ' : '') + title;
+
+  // Show loading first, then load iframe
+  loading.style.opacity = '1';
+  loading.style.pointerEvents = 'auto';
+  iframe.src = '';
+
+  modal.classList.add('open');
+
+  // Load the iframe after a small delay
+  setTimeout(() => {
+    // Try embed — if it shows error, user can tap "YouTube pe Dekho"
+    iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=0&playsinline=1&controls=1&modestbranding=1&rel=0`;
+    // Hide loading after iframe load attempt
+    setTimeout(() => {
+      loading.style.opacity = '0';
+      setTimeout(() => { loading.style.pointerEvents = 'none'; }, 400);
+    }, 1800);
+  }, 200);
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById('video-modal');
+  const iframe = document.getElementById('video-modal-iframe');
+  if (!modal.classList.contains('open')) return;
+  modal.classList.remove('open');
+  // Stop video immediately
+  iframe.src = '';
+  currentVideoId = '';
+}
+
+function openCurrentInYT() {
+  if (currentVideoId) {
+    window.open(`https://www.youtube.com/shorts/${currentVideoId}`, '_blank');
+  }
+}
+
+// ─── Like / Share ─────────────────────────────────────
+function likeShort(idx) {
+  const icon = document.getElementById('like-icon-' + idx);
+  const countEl = document.getElementById('like-count-' + idx);
+  if (!icon || !countEl) return;
+
+  if (likedSet2.has(idx)) {
+    likedSet2.delete(idx);
+    likeCounts2[idx]--;
+    icon.classList.remove('liked');
+    icon.textContent = '❤️';
+  } else {
+    likedSet2.add(idx);
+    likeCounts2[idx]++;
+    icon.classList.add('liked');
+    toast('❤️ Liked!');
+  }
+  countEl.textContent = likeCounts2[idx];
+}
+
+function shareShort(videoId, title) {
+  const url = `https://www.youtube.com/shorts/${videoId}`;
+  if (navigator.share) {
+    navigator.share({ title: title + ' - Ankit Study Point', url }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => toast('🔗 Link copy ho gaya!'));
+  } else {
+    toast('🔗 ' + url);
+  }
+}
+</script>
+<script src="https://replit-cdn.com/replit-pill/replit-pill.global.js" data-repl-id="59eabd05-1a6c-4d7e-8479-396e792593eb"></script></body>
+</html>
