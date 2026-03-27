@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="theme-color" content="#0d1117"/>
+  <meta name="description" content="Ankit Study Point – D Pharma & B Pharma Notes, Study Tools, Pharmacy Education"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Ankit Study Point"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
+  <link rel="icon" type="image/png" href="icons/icon-192.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <title>Ankit Study Point</title>
+<style>
+/* ═══ VARIABLES ═══ */
+:root{
+  --p:#1e88e5;--p2:#1565c0;--accent:#00e5a0;--accent2:#00bcd4;
+  --bg:#0d1117;--bg2:#161b22;--bg3:#1c2333;--surface:#21262d;--card:#2d333b;
+  --border:#30363d;--text:#e6edf3;--muted:#8b949e;
+  --shadow:0 8px 32px rgba(0,0,0,.5);
+  --nav-h:62px;--hdr-h:58px;
+  --fn:'Nunito',sans-serif;--fh:'Poppins',sans-serif;
+  --ease:cubic-bezier(0.4,0,0.2,1);
+}
+[data-theme="light"]{
+  --bg:#f0f4f8;--bg2:#fff;--bg3:#e8f0fe;--surface:#fff;--card:#f7fafc;
+  --border:#e2e8f0;--text:#1a202c;--muted:#718096;
+  --shadow:0 4px 20px rgba(10,61,98,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;font-family:var(--fn);background:var(--bg);color:var(--text);overflow:hidden;transition:background .3s,color .3s;}
+
+/* ═══ SPLASH ═══ */
+#splash{
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(145deg,#0d1117 0%,#0a3d62 55%,#00b894 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .7s var(--ease),transform .7s var(--ease);
+}
+#splash.hide{opacity:0;transform:scale(1.06);pointer-events:none;}
+.sp-logo{width:110px;height:110px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.18);border-radius:30px;display:flex;align-items:center;justify-content:center;margin-bottom:28px;box-shadow:0 12px 40px rgba(0,0,0,.4);animation:popIn .8s cubic-bezier(0.34,1.56,0.64,1) .2s both;overflow:hidden;}
+.sp-logo img{width:90px;height:90px;object-fit:contain;border-radius:22px;}
+.sp-title{font-family:var(--fh);font-size:28px;font-weight:700;color:#fff;animation:fadeUp .6s ease .5s both;}
+.sp-sub{font-size:13px;color:rgba(255,255,255,.65);margin-top:6px;animation:fadeUp .6s ease .65s both;}
+.sp-bar{margin-top:52px;width:200px;height:3px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden;animation:fadeUp .5s ease .8s both;}
+.sp-fill{height:100%;width:0;background:linear-gradient(90deg,#00e5a0,#00bcd4);border-radius:3px;animation:fillBar 2.2s ease 1s forwards;}
+@keyframes popIn{from{opacity:0;transform:scale(.4);}to{opacity:1;transform:scale(1);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fillBar{to{width:100%;}}
+
+/* ═══ APP ═══ */
+#app{position:fixed;inset:0;display:flex;flex-direction:column;opacity:0;transition:opacity .5s ease;}
+#app.ready{opacity:1;}
+
+/* ═══ HEADER ═══ */
+#hdr{height:var(--hdr-h);background:linear-gradient(135deg,#0a3d62,#1565c0);display:flex;align-items:center;padding:0 12px;gap:10px;box-shadow:0 2px 16px rgba(0,0,0,.35);position:relative;z-index:200;flex-shrink:0;}
+.hdr-logo{width:36px;height:36px;background:rgba(255,255,255,.12);border-radius:10px;border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
+.hdr-logo img{width:28px;height:28px;object-fit:contain;border-radius:6px;}
+.hdr-info{flex:1;}
+.hdr-name{font-family:var(--fh);font-size:14px;font-weight:700;color:#fff;line-height:1.2;}
+.hdr-sub{font-size:10px;color:rgba(255,255,255,.65);}
+.hdr-btn{width:36px;height:36px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;transition:background .2s,transform .15s;}
+.hdr-btn:active{transform:scale(.88);}
+.hdr-btn svg{width:18px;height:18px;}
+
+/* ═══ PROGRESS BAR ═══ */
+#pbar{height:2.5px;background:linear-gradient(90deg,var(--accent),var(--accent2));position:absolute;top:var(--hdr-h);left:0;width:0%;z-index:199;transition:width .25s ease;box-shadow:0 0 8px rgba(0,229,160,.6);}
+#pbar.on{animation:pb 1.6s ease infinite;}
+@keyframes pb{0%{width:8%;}60%{width:75%;}100%{width:88%;}}
+
+/* ═══ CONTENT ═══ */
+#content{flex:1;overflow:hidden;position:relative;}
+#webview{width:100%;height:100%;border:none;display:block;background:var(--bg);opacity:0;transition:opacity .35s ease;}
+#webview.loaded{opacity:1;}
+
+/* ═══ OFFLINE ═══ */
+#offline{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px;text-align:center;z-index:50;}
+#offline.show{display:flex;}
+.of-icon{font-size:64px;animation:pulse 2s ease infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.of-title{font-family:var(--fh);font-size:21px;font-weight:700;}
+.of-sub{font-size:14px;color:var(--muted);line-height:1.7;max-width:280px;}
+.of-btn{padding:12px 30px;background:linear-gradient(135deg,#0a3d62,#00b894);color:#fff;border:none;border-radius:14px;font-family:var(--fn);font-size:15px;font-weight:800;cursor:pointer;margin-top:8px;box-shadow:0 6px 20px rgba(0,184,148,.3);}
+
+/* ═══ BOTTOM NAV ═══ */
+#nav{height:var(--nav-h);background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:stretch;box-shadow:0 -4px 24px rgba(0,0,0,.15);flex-shrink:0;position:relative;z-index:200;}
+#nav-ind{position:absolute;top:0;left:0;height:2.5px;width:20%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:0 0 3px 3px;box-shadow:0 0 10px rgba(0,229,160,.5);transition:left .35s cubic-bezier(0.34,1.2,0.64,1);}
+.nb{flex:1;border:none;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;color:var(--muted);font-family:var(--fn);font-size:10px;font-weight:700;letter-spacing:.3px;transition:color .25s,transform .2s;}
+.nb.active{color:var(--accent);}
+.nb:active{transform:scale(.88);}
+.nb svg{width:22px;height:22px;transition:transform .3s cubic-bezier(0.34,1.56,0.64,1);}
+.nb.active svg{transform:translateY(-2px) scale(1.1);}
+
+/* ═══════════════════════════════════════════
+   SIDEBAR OVERLAY
+═══════════════════════════════════════════ */
+#sb-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.6);
+  z-index:500;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s ease;
+  backdrop-filter:blur(3px);
+}
+#sb-overlay.open{opacity:1;pointer-events:all;}
+
+/* ═══ SIDEBAR PANEL ═══ */
+#sidebar{
+  position:fixed;top:0;left:0;bottom:0;
+  width:82%;max-width:340px;
+  background:var(--bg2);
+  z-index:501;
+  transform:translateX(-100%);
+  transition:transform .35s cubic-bezier(0.4,0,0.2,1);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  box-shadow:4px 0 32px rgba(0,0,0,.5);
+}
+#sidebar.open{transform:translateX(0);}
+
+/* Sidebar Header */
+.sb-hdr{
+  background:linear-gradient(135deg,#0a3d62,#1565c0);
+  padding:20px 18px 18px;flex-shrink:0;
+}
+.sb-hdr-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.sb-hdr-logo{width:44px;height:44px;background:rgba(255,255,255,.15);border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.sb-hdr-logo img{width:36px;height:36px;object-fit:contain;border-radius:8px;}
+.sb-hdr-title{font-family:var(--fh);font-size:16px;font-weight:700;color:#fff;}
+.sb-hdr-sub{font-size:11px;color:rgba(255,255,255,.65);}
+.sb-close{margin-left:auto;width:32px;height:32px;background:rgba(255,255,255,.12);border:none;border-radius:9px;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* Tools label in sidebar header */
+.sb-tools-label{
+  background:rgba(0,229,160,.15);
+  border:1px solid rgba(0,229,160,.3);
+  border-radius:8px;padding:6px 12px;
+  font-size:12px;font-weight:800;
+  color:#00e5a0;letter-spacing:.5px;
+  display:inline-block;
+}
+
+/* Sidebar Body */
+.sb-body{flex:1;overflow-y:auto;padding:16px;}
+.sb-body::-webkit-scrollbar{width:4px;}
+.sb-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+/* Tool Cards */
+.tool-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  margin-bottom:14px;
+  overflow:hidden;
+  transition:transform .2s,box-shadow .2s;
+}
+.tool-card:active{transform:scale(.98);}
+
+.tool-card-hdr{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;cursor:pointer;
+  border-bottom:1px solid transparent;
+  transition:border-color .2s;
+}
+.tool-card.open .tool-card-hdr{border-color:var(--border);}
+.tool-icon{
+  width:40px;height:40px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.tool-card-info{flex:1;}
+.tool-card-name{font-family:var(--fh);font-size:14px;font-weight:700;color:var(--text);}
+.tool-card-desc{font-size:11px;color:var(--muted);margin-top:2px;}
+.tool-chevron{
+  width:22px;height:22px;color:var(--muted);
+  transition:transform .3s var(--ease);flex-shrink:0;
+}
+.tool-card.open .tool-chevron{transform:rotate(180deg);}
+
+/* Tool Content Panel */
+.tool-content{
+  max-height:0;overflow:hidden;
+  transition:max-height .4s var(--ease);
+  padding:0 16px;
+}
+.tool-card.open .tool-content{max-height:600px;padding:16px;}
+
+/* Input Styles */
+.t-label{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px;display:block;letter-spacing:.4px;}
+.t-input{
+  width:100%;padding:10px 14px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:10px;color:var(--text);
+  font-family:var(--fn);font-size:14px;
+  outline:none;transition:border .2s;
+  -webkit-appearance:none;
+}
+.t-input:focus{border-color:var(--accent);}
+.t-select{
+  width:100%;padding:10px 14px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:10px;color:var(--text);
+  font-family:var(--fn);font-size:14px;
+  outline:none;cursor:pointer;
+  -webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b949e' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;
+  padding-right:36px;
+}
+.t-row{display:flex;gap:10px;margin-bottom:12px;}
+.t-row > *{flex:1;}
+.t-btn{
+  width:100%;padding:11px;
+  background:linear-gradient(135deg,#0a3d62,#00b894);
+  color:#fff;border:none;border-radius:10px;
+  font-family:var(--fn);font-size:14px;font-weight:800;
+  cursor:pointer;margin-top:4px;
+  transition:opacity .2s,transform .15s;
+}
+.t-btn:active{opacity:.85;transform:scale(.97);}
+
+/* Result Box */
+.t-result{
+  margin-top:12px;padding:14px;
+  background:linear-gradient(135deg,rgba(0,229,160,.08),rgba(0,188,212,.08));
+  border:1px solid rgba(0,229,160,.25);
+  border-radius:12px;display:none;
+  animation:fadeUp .3s ease;
+}
+.t-result.show{display:block;}
+.t-result-val{font-family:var(--fh);font-size:20px;font-weight:700;color:var(--accent);text-align:center;}
+.t-result-label{font-size:12px;color:var(--muted);text-align:center;margin-top:3px;}
+
+/* Abbr result */
+.abbr-result{margin-top:12px;display:none;animation:fadeUp .3s ease;}
+.abbr-result.show{display:block;}
+.abbr-item{padding:10px 14px;background:var(--bg3);border-radius:10px;margin-bottom:8px;}
+.abbr-short{font-family:var(--fh);font-size:15px;font-weight:700;color:var(--accent);}
+.abbr-long{font-size:13px;color:var(--text);margin-top:2px;}
+.abbr-cat{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* Sidebar Footer */
+.sb-footer{padding:12px 18px;border-top:1px solid var(--border);flex-shrink:0;}
+.sb-footer-link{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:11px;
+  color:var(--text);text-decoration:none;
+  font-size:14px;font-weight:600;
+  transition:background .2s;cursor:pointer;border:none;background:transparent;width:100%;
+}
+.sb-footer-link:hover,.sb-footer-link:active{background:var(--bg3);}
+.sb-footer-link svg{width:18px;height:18px;color:var(--muted);}
+
+/* ═══ INSTALL BANNER ═══ */
+#ibanner{position:fixed;bottom:calc(var(--nav-h) + 10px);left:12px;right:12px;background:linear-gradient(135deg,#0a3d62,#1565c0);border-radius:18px;padding:14px;display:none;align-items:center;gap:12px;box-shadow:0 10px 36px rgba(10,61,98,.45);z-index:300;border:1px solid rgba(255,255,255,.1);animation:slideUp .45s cubic-bezier(0.34,1.4,0.64,1);}
+#ibanner.show{display:flex;}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+.ib-icon{font-size:28px;flex-shrink:0;}
+.ib-txt{flex:1;}
+.ib-txt strong{display:block;color:#fff;font-size:13px;font-weight:800;}
+.ib-txt span{color:rgba(255,255,255,.7);font-size:11px;}
+.ib-install{padding:8px 14px;background:var(--accent);color:#0d1117;border:none;border-radius:9px;font-family:var(--fn);font-size:13px;font-weight:800;cursor:pointer;flex-shrink:0;}
+.ib-x{width:26px;height:26px;background:rgba(255,255,255,.12);border:none;border-radius:7px;color:#fff;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* ═══ TOAST ═══ */
+#toast{position:fixed;bottom:calc(var(--nav-h) + 18px);left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface);color:var(--text);border:1px solid var(--border);padding:10px 22px;border-radius:12px;font-size:13px;font-weight:700;opacity:0;pointer-events:none;white-space:nowrap;transition:all .3s var(--ease);z-index:400;box-shadow:var(--shadow);}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+#ptrans{position:absolute;inset:0;background:var(--bg);z-index:100;opacity:0;pointer-events:none;transition:opacity .2s ease;}
+#ptrans.on{opacity:1;pointer-events:all;}
+
+/* ═══ SHORTS OVERLAY ═══ */
+#shorts-overlay{
+  position:fixed;inset:0;z-index:600;
+  background:#000;
+  display:none;flex-direction:column;
+  transform:translateY(100%);
+  transition:transform .4s cubic-bezier(0.4,0,0.2,1);
+}
+#shorts-overlay.open{display:flex;transform:translateY(0);}
+#shorts-overlay.closing{transform:translateY(100%);}
+
+/* Header */
+#shorts-hdr{
+  position:absolute;top:0;left:0;right:0;
+  height:54px;z-index:10;
+  background:linear-gradient(180deg,rgba(0,0,0,.85) 0%,transparent 100%);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 18px;
+}
+#shorts-logo{
+  font-family:var(--fh);font-size:18px;font-weight:800;
+  color:#fff;letter-spacing:.5px;
+}
+#shorts-logo::before{content:'';display:inline-block;width:10px;height:10px;background:#ff0000;border-radius:50%;margin-right:8px;}
+#shorts-close{
+  width:36px;height:36px;background:rgba(255,255,255,.15);
+  border:none;border-radius:50%;color:#fff;font-size:16px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(6px);
+}
+
+/* Feed container - snap scroll */
+#shorts-feed{
+  flex:1;overflow-y:scroll;
+  scroll-snap-type:y mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+#shorts-feed::-webkit-scrollbar{display:none;}
+
+/* Each short item */
+.short-item{
+  width:100%;height:100dvh;
+  scroll-snap-align:start;scroll-snap-stop:always;
+  position:relative;background:#000;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+
+/* YouTube iframe inside short */
+.short-iframe{
+  width:100%;height:100%;
+  border:none;
+  position:absolute;inset:0;
+}
+
+/* Right side action buttons */
+.short-actions{
+  position:absolute;right:12px;bottom:120px;
+  display:flex;flex-direction:column;align-items:center;gap:20px;
+  z-index:5;
+}
+.sh-action-btn{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  color:#fff;background:none;border:none;cursor:pointer;
+}
+.sh-action-icon{
+  width:44px;height:44px;background:rgba(255,255,255,.18);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:20px;backdrop-filter:blur(4px);
+  transition:transform .2s,background .2s;
+}
+.sh-action-btn:active .sh-action-icon{transform:scale(.85);background:rgba(255,255,255,.3);}
+.sh-action-label{font-size:11px;font-weight:700;text-shadow:0 1px 4px rgba(0,0,0,.8);}
+
+/* Bottom info */
+.short-info{
+  position:absolute;left:0;right:72px;bottom:0;
+  padding:16px 16px 20px;
+  background:linear-gradient(0deg,rgba(0,0,0,.85) 0%,transparent 100%);
+  z-index:5;
+}
+.short-channel{font-size:14px;font-weight:800;color:#fff;margin-bottom:4px;}
+.short-title{font-size:13px;color:rgba(255,255,255,.85);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+
+/* Loading spinner */
+#shorts-loading{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:16px;color:#fff;
+  z-index:2;
+}
+.sh-spin{
+  width:44px;height:44px;border:3px solid rgba(255,255,255,.2);
+  border-top-color:#ff0000;border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+#shorts-loading p{font-size:14px;color:rgba(255,255,255,.7);}
+
+/* Hint pill */
+#shorts-hint{
+  position:absolute;bottom:calc(var(--nav-h) + 10px);
+  left:50%;transform:translateX(-50%);
+  background:rgba(255,255,255,.15);backdrop-filter:blur(8px);
+  padding:6px 16px;border-radius:20px;
+  color:#fff;font-size:12px;font-weight:700;
+  z-index:10;
+  animation:fadeOut 3s ease 2s forwards;
+  white-space:nowrap;
+}
+@keyframes fadeOut{to{opacity:0;pointer-events:none;}}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="sp-logo">
+    <img src="icons/icon-192.png" alt="ASP" onerror="this.style.fontSize='50px';this.textContent='📚'"/>
+  </div>
+  <div class="sp-title">Ankit Study Point</div>
+  <div class="sp-sub">🎓 Learn • Prepare • Succeed</div>
+  <div class="sp-bar"><div class="sp-fill"></div></div>
+</div>
+
+<!-- SIDEBAR OVERLAY -->
+<div id="sb-overlay" onclick="closeSidebar()"></div>
+
+<!-- ═══════════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════════ -->
+<div id="sidebar">
+
+  <!-- Sidebar Header -->
+  <div class="sb-hdr">
+    <div class="sb-hdr-top">
+      <div class="sb-hdr-logo">
+        <img src="icons/icon-192.png" alt="ASP" onerror="this.textContent='📚';this.style.fontSize='22px'"/>
+      </div>
+      <div>
+        <div class="sb-hdr-title">Ankit Study Point</div>
+        <div class="sb-hdr-sub">Pharmacy Tools</div>
+      </div>
+      <button class="sb-close" onclick="closeSidebar()">✕</button>
+    </div>
+    <div class="sb-tools-label">🛠️ PHARMACY TOOLS</div>
+  </div>
+
+  <!-- Sidebar Tools Body -->
+  <div class="sb-body">
+
+    <!-- ─── 1. BMI CALCULATOR ─── -->
+    <div class="tool-card" id="tc-bmi">
+      <div class="tool-card-hdr" onclick="toggleTool('bmi')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,#e74c3c22,#e74c3c44);">⚖️</div>
+        <div class="tool-card-info">
+          <div class="tool-card-name">BMI Calculator</div>
+          <div class="tool-card-desc">Body Mass Index check karo</div>
+        </div>
+        <svg class="tool-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <div class="tool-content" id="tool-bmi">
+        <div class="t-row">
+          <div>
+            <label class="t-label">WEIGHT (kg)</label>
+            <input class="t-input" type="number" id="bmi-w" placeholder="e.g. 65"/>
+          </div>
+          <div>
+            <label class="t-label">HEIGHT (cm)</label>
+            <input class="t-input" type="number" id="bmi-h" placeholder="e.g. 170"/>
+          </div>
+        </div>
+        <select class="t-select" id="bmi-gender" style="margin-bottom:12px">
+          <option value="">Gender (optional)</option>
+          <option value="male">Male / पुरुष</option>
+          <option value="female">Female / महिला</option>
+        </select>
+        <button class="t-btn" onclick="calcBMI()">Calculate BMI</button>
+        <div class="t-result" id="bmi-result">
+          <div class="t-result-val" id="bmi-val">--</div>
+          <div class="t-result-label" id="bmi-cat">--</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── 2. DRUG DOSE CALCULATOR ─── -->
+    <div class="tool-card" id="tc-dose">
+      <div class="tool-card-hdr" onclick="toggleTool('dose')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,#27ae6022,#27ae6044);">💊</div>
+        <div class="tool-card-info">
+          <div class="tool-card-name">Drug Dose Calculator</div>
+          <div class="tool-card-desc">Patient ke liye dose calculate karo</div>
+        </div>
+        <svg class="tool-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <div class="tool-content" id="tool-dose">
+        <label class="t-label">DOSE (mg/kg)</label>
+        <input class="t-input" type="number" id="dose-mgkg" placeholder="e.g. 10" style="margin-bottom:12px"/>
+        <label class="t-label">PATIENT WEIGHT (kg)</label>
+        <input class="t-input" type="number" id="dose-wt" placeholder="e.g. 70" style="margin-bottom:12px"/>
+        <label class="t-label">AVAILABLE CONCENTRATION (mg/ml)</label>
+        <input class="t-input" type="number" id="dose-conc" placeholder="e.g. 50" style="margin-bottom:12px"/>
+        <label class="t-label">FREQUENCY</label>
+        <select class="t-select" id="dose-freq" style="margin-bottom:12px">
+          <option value="1">Once daily (OD)</option>
+          <option value="2">Twice daily (BD)</option>
+          <option value="3">Thrice daily (TDS)</option>
+          <option value="4">Four times (QID)</option>
+        </select>
+        <button class="t-btn" onclick="calcDose()">Calculate Dose</button>
+        <div class="t-result" id="dose-result">
+          <div class="t-result-val" id="dose-val">--</div>
+          <div class="t-result-label" id="dose-label">--</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── 3. UNIT CONVERTER ─── -->
+    <div class="tool-card" id="tc-unit">
+      <div class="tool-card-hdr" onclick="toggleTool('unit')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,#8e44ad22,#8e44ad44);">🔄</div>
+        <div class="tool-card-info">
+          <div class="tool-card-name">Unit Converter</div>
+          <div class="tool-card-desc">mg, ml, mEq, % convert karo</div>
+        </div>
+        <svg class="tool-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <div class="tool-content" id="tool-unit">
+        <label class="t-label">CONVERSION TYPE</label>
+        <select class="t-select" id="unit-type" style="margin-bottom:12px" onchange="updateUnitFields()">
+          <option value="mg-mcg">mg → mcg (microgram)</option>
+          <option value="mcg-mg">mcg → mg</option>
+          <option value="mg-g">mg → g (gram)</option>
+          <option value="g-mg">g → mg</option>
+          <option value="ml-l">ml → L (liter)</option>
+          <option value="l-ml">L → ml</option>
+          <option value="mgml-percent">mg/ml → % concentration</option>
+          <option value="percent-mgml">% → mg/ml</option>
+          <option value="meq-mmol">mEq → mmol</option>
+          <option value="kg-lb">kg → lb (pound)</option>
+          <option value="lb-kg">lb → kg</option>
+          <option value="celsius-f">°C → °F</option>
+          <option value="f-celsius">°F → °C</option>
+        </select>
+        <label class="t-label">VALUE</label>
+        <input class="t-input" type="number" id="unit-val" placeholder="Enter value" style="margin-bottom:12px"/>
+        <div id="unit-extra" style="display:none;margin-bottom:12px">
+          <label class="t-label" id="unit-extra-label">VALENCE</label>
+          <input class="t-input" type="number" id="unit-extra-val" placeholder="e.g. 1"/>
+        </div>
+        <button class="t-btn" onclick="calcUnit()">Convert</button>
+        <div class="t-result" id="unit-result">
+          <div class="t-result-val" id="unit-res-val">--</div>
+          <div class="t-result-label" id="unit-res-label">--</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── 4. MEDICAL ABBREVIATION FINDER ─── -->
+    <div class="tool-card" id="tc-abbr">
+      <div class="tool-card-hdr" onclick="toggleTool('abbr')">
+        <div class="tool-icon" style="background:linear-gradient(135deg,#f39c1222,#f39c1244);">🔤</div>
+        <div class="tool-card-info">
+          <div class="tool-card-name">Medical Abbreviations</div>
+          <div class="tool-card-desc">200+ medical short forms</div>
+        </div>
+        <svg class="tool-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <div class="tool-content" id="tool-abbr">
+        <label class="t-label">SEARCH ABBREVIATION</label>
+        <input class="t-input" type="text" id="abbr-input" placeholder="e.g. OD, BD, PRN, q.s..." style="margin-bottom:10px" oninput="searchAbbr()"/>
+        <div class="abbr-result" id="abbr-result"></div>
+      </div>
+    </div>
+
+  </div><!-- /sb-body -->
+
+  <!-- Sidebar Footer Links -->
+  <div class="sb-footer">
+    <button class="sb-footer-link" onclick="goTo('home',0);closeSidebar()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </button>
+    <button class="sb-footer-link" onclick="goTo('notes',1);closeSidebar()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      D Pharma Notes
+    </button>
+    <button class="sb-footer-link" onclick="toggleTheme()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      Dark / Light Mode
+    </button>
+  </div>
+
+</div><!-- /sidebar -->
+
+<!-- APP -->
+<div id="app">
+  <div id="hdr">
+    <div class="hdr-logo">
+      <img src="icons/icon-192.png" alt="ASP" onerror="this.style.display='none'"/>
+    </div>
+    <div class="hdr-info">
+      <div class="hdr-name">Ankit Study Point</div>
+      <div class="hdr-sub">Pharmacy Education Hub</div>
+    </div>
+    <!-- Hamburger Menu -->
+    <button class="hdr-btn" onclick="openSidebar()" title="Tools Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <!-- Theme Toggle -->
+    <button class="hdr-btn" onclick="toggleTheme()" id="themeBtn" title="Theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor" opacity=".7"/>
+      </svg>
+    </button>
+    <!-- Refresh -->
+    <button class="hdr-btn" onclick="refreshPage()" title="Refresh">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="23 4 23 10 17 10"/>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+      </svg>
+    </button>
+  </div>
+
+  <div id="pbar"></div>
+
+  <div id="content">
+    <div id="ptrans"></div>
+    <iframe id="webview"
+      src="https://ankitstudypoint.blogspot.com/?m=1"
+      title="Ankit Study Point"
+      allow="downloads; fullscreen"
+      sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-downloads allow-top-navigation">
+    </iframe>
+    <div id="offline">
+      <div class="of-icon">📡</div>
+      <div class="of-title">Internet Nahi Hai</div>
+      <div class="of-sub">Kripaya apna internet connection check karein aur dobara try karein.</div>
+      <button class="of-btn" onclick="retryConn()">🔄 Retry Karo</button>
+    </div>
+  </div>
+
+  <div id="nav">
+    <div id="nav-ind"></div>
+    <button class="nb active" id="nb-home" onclick="goTo('home',0)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </button>
+    <button class="nb" id="nb-notes" onclick="goTo('notes',1)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Notes
+    </button>
+    <button class="nb" id="nb-tools" onclick="goTo('tools',2)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+      Tools
+    </button>
+    <button class="nb" id="nb-shorts" onclick="openShorts()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor" opacity=".85"/></svg>
+      Shorts
+    </button>
+    <button class="nb" id="nb-contact" onclick="goTo('contact',4)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      Contact
+    </button>
+  </div>
+</div>
+
+<!-- ═══ SHORTS OVERLAY ═══ -->
+<div id="shorts-overlay">
+  <div id="shorts-hdr">
+    <span id="shorts-logo">▶ Shorts</span>
+    <button id="shorts-close" onclick="closeShorts()">✕</button>
+  </div>
+  <div id="shorts-feed" id="shorts-feed">
+    <div id="shorts-loading">
+      <div class="sh-spin"></div>
+      <p>Loading Shorts...</p>
+    </div>
+  </div>
+  <div id="shorts-hint">
+    <span>↑ Swipe karo ↓</span>
+  </div>
+</div>
+
+<!-- Install Banner -->
+<div id="ibanner">
+  <div class="ib-icon">📲</div>
+  <div class="ib-txt"><strong>App Install Karo</strong><span>Home screen pe add karein – Free!</span></div>
+  <button class="ib-install" onclick="installApp()">Install</button>
+  <button class="ib-x" onclick="closeBanner()">✕</button>
+</div>
+<div id="toast"></div>
+
+<script>
+// ═══ CONSTANTS ═══
+const BLOG='https://ankitstudypoint.blogspot.com';
+const URLS={
+  home:   BLOG+'/?m=1',
+  notes:  BLOG+'/search/label/D%20Pharma%20Notes?m=1',
+  tools:  BLOG+'/p/ankitstudypoint.html?m=1',
+  search: BLOG+'/search?m=1',
+  contact:BLOG+'/p/contact-us_01586736301.html?m=1'
+};
+const NAVIDS=['nb-home','nb-notes','nb-tools','nb-shorts','nb-contact'];
+let stack=[URLS.home], deferredPrompt=null;
+
+// ═══ THEME ═══
+function applyTheme(){
+  const t=localStorage.getItem('theme')||'dark';
+  document.documentElement.setAttribute('data-theme',t);
+  const btn=document.getElementById('themeBtn');
+  if(t==='dark'){
+    btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor" opacity=".7"/></svg>`;
+  } else {
+    btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
+  }
+}
+function toggleTheme(){
+  const c=document.documentElement.getAttribute('data-theme');
+  localStorage.setItem('theme',c==='dark'?'light':'dark');
+  applyTheme(); toast(c==='dark'?'☀️ Light Mode':'🌙 Dark Mode');
+}
+applyTheme();
+
+// ═══ SPLASH ═══
+window.addEventListener('load',()=>{ setTimeout(()=>{ document.getElementById('splash').classList.add('hide'); document.getElementById('app').classList.add('ready'); },3200); });
+
+// ═══ SIDEBAR ═══
+function openSidebar(){
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sb-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sb-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ═══ TOOL ACCORDION ═══
+function toggleTool(id){
+  const card=document.getElementById('tc-'+id);
+  const wasOpen=card.classList.contains('open');
+  // Close all
+  ['bmi','dose','unit','abbr'].forEach(t=>{
+    document.getElementById('tc-'+t).classList.remove('open');
+  });
+  if(!wasOpen) card.classList.add('open');
+}
+
+// ═══════════════════════════════════════════
+// TOOL 1: BMI CALCULATOR
+// ═══════════════════════════════════════════
+function calcBMI(){
+  const w=parseFloat(document.getElementById('bmi-w').value);
+  const h=parseFloat(document.getElementById('bmi-h').value)/100;
+  if(!w||!h||h<=0){ toast('⚠️ Weight aur Height daalo'); return; }
+  const bmi=(w/(h*h)).toFixed(1);
+  let cat='', color='#00e5a0';
+  if(bmi<18.5){cat='Underweight (Kam vajan)';color='#f39c12';}
+  else if(bmi<25){cat='Normal Weight ✅';color='#00e5a0';}
+  else if(bmi<30){cat='Overweight (Zyada vajan)';color='#e67e22';}
+  else{cat='Obese (Motapa)';color='#e74c3c';}
+  document.getElementById('bmi-val').textContent='BMI: '+bmi;
+  document.getElementById('bmi-val').style.color=color;
+  document.getElementById('bmi-cat').textContent=cat;
+  document.getElementById('bmi-result').classList.add('show');
+}
+
+// ═══════════════════════════════════════════
+// TOOL 2: DRUG DOSE CALCULATOR
+// ═══════════════════════════════════════════
+function calcDose(){
+  const mgkg=parseFloat(document.getElementById('dose-mgkg').value);
+  const wt=parseFloat(document.getElementById('dose-wt').value);
+  const conc=parseFloat(document.getElementById('dose-conc').value);
+  const freq=parseInt(document.getElementById('dose-freq').value);
+  if(!mgkg||!wt){ toast('⚠️ Dose aur Weight daalo'); return; }
+  const totalMg=(mgkg*wt).toFixed(2);
+  let label=`Total dose: ${totalMg} mg per dose`;
+  let extra='';
+  if(conc){ const vol=(totalMg/conc).toFixed(2); extra=` | Volume: ${vol} ml`; }
+  if(freq>1){ const daily=(totalMg*freq).toFixed(2); extra+=` | Daily: ${daily} mg`; }
+  document.getElementById('dose-val').textContent=totalMg+' mg';
+  document.getElementById('dose-label').textContent=label+extra;
+  document.getElementById('dose-result').classList.add('show');
+}
+
+// ═══════════════════════════════════════════
+// TOOL 3: UNIT CONVERTER
+// ═══════════════════════════════════════════
+function updateUnitFields(){
+  const type=document.getElementById('unit-type').value;
+  const extra=document.getElementById('unit-extra');
+  if(type==='meq-mmol'){
+    extra.style.display='block';
+    document.getElementById('unit-extra-label').textContent='VALENCE (e.g. Na=1, Ca=2)';
+  } else { extra.style.display='none'; }
+  document.getElementById('unit-result').classList.remove('show');
+}
+function calcUnit(){
+  const type=document.getElementById('unit-type').value;
+  const val=parseFloat(document.getElementById('unit-val').value);
+  if(isNaN(val)){ toast('⚠️ Value daalo'); return; }
+  let res, label;
+  const conversions={
+    'mg-mcg':[val*1000,'mcg (Micrograms)'],
+    'mcg-mg':[val/1000,'mg (Milligrams)'],
+    'mg-g':  [val/1000,'g (Grams)'],
+    'g-mg':  [val*1000,'mg (Milligrams)'],
+    'ml-l':  [val/1000,'L (Liters)'],
+    'l-ml':  [val*1000,'ml (Milliliters)'],
+    'mgml-percent':[(val/10).toFixed(3),'% (w/v concentration)'],
+    'percent-mgml':[(val*10).toFixed(2),'mg/ml'],
+    'kg-lb': [(val*2.2046).toFixed(2),'lb (Pounds)'],
+    'lb-kg': [(val/2.2046).toFixed(2),'kg (Kilograms)'],
+    'celsius-f':[(val*9/5+32).toFixed(1),'°F (Fahrenheit)'],
+    'f-celsius':[((val-32)*5/9).toFixed(1),'°C (Celsius)'],
+  };
+  if(type==='meq-mmol'){
+    const valence=parseFloat(document.getElementById('unit-extra-val').value)||1;
+    res=(val/valence).toFixed(3); label='mmol';
+  } else if(conversions[type]){
+    [res,label]=conversions[type];
+  } else { toast('⚠️ Type select karo'); return; }
+  document.getElementById('unit-res-val').textContent=res;
+  document.getElementById('unit-res-label').textContent='→ '+label;
+  document.getElementById('unit-result').classList.add('show');
+}
+
+// ═══════════════════════════════════════════
+// TOOL 4: MEDICAL ABBREVIATIONS (200+)
+// ═══════════════════════════════════════════
+const ABBR_DB=[
+  {s:'OD',l:'Once Daily',c:'Dosing'},
+  {s:'BD',l:'Twice Daily (Bis Die)',c:'Dosing'},
+  {s:'TDS',l:'Three Times Daily (Ter Die Sumendum)',c:'Dosing'},
+  {s:'QID',l:'Four Times Daily (Quater In Die)',c:'Dosing'},
+  {s:'PRN',l:'As Needed (Pro Re Nata)',c:'Dosing'},
+  {s:'SOS',l:'If Needed (Si Opus Sit)',c:'Dosing'},
+  {s:'AC',l:'Before Meals (Ante Cibum)',c:'Timing'},
+  {s:'PC',l:'After Meals (Post Cibum)',c:'Timing'},
+  {s:'HS',l:'At Bedtime (Hora Somni)',c:'Timing'},
+  {s:'AM',l:'Morning',c:'Timing'},
+  {s:'PM',l:'Evening/Afternoon',c:'Timing'},
+  {s:'QH',l:'Every Hour',c:'Timing'},
+  {s:'Q4H',l:'Every 4 Hours',c:'Timing'},
+  {s:'Q6H',l:'Every 6 Hours',c:'Timing'},
+  {s:'Q8H',l:'Every 8 Hours',c:'Timing'},
+  {s:'Q12H',l:'Every 12 Hours',c:'Timing'},
+  {s:'PO',l:'By Mouth (Per Os)',c:'Route'},
+  {s:'IV',l:'Intravenous',c:'Route'},
+  {s:'IM',l:'Intramuscular',c:'Route'},
+  {s:'SC',l:'Subcutaneous',c:'Route'},
+  {s:'SL',l:'Sublingual (Under Tongue)',c:'Route'},
+  {s:'PR',l:'Per Rectum',c:'Route'},
+  {s:'TOP',l:'Topical',c:'Route'},
+  {s:'INH',l:'Inhalation',c:'Route'},
+  {s:'ID',l:'Intradermal',c:'Route'},
+  {s:'IT',l:'Intrathecal',c:'Route'},
+  {s:'Rx',l:'Prescription / Treatment',c:'General'},
+  {s:'Dx',l:'Diagnosis',c:'General'},
+  {s:'Hx',l:'History',c:'General'},
+  {s:'Sx',l:'Symptoms',c:'General'},
+  {s:'Tx',l:'Treatment',c:'General'},
+  {s:'Fx',l:'Fracture',c:'General'},
+  {s:'OTC',l:'Over The Counter',c:'General'},
+  {s:'NPC',l:'No Previous Complaint',c:'General'},
+  {s:'c/o',l:'Complaints Of',c:'General'},
+  {s:'w/o',l:'Without',c:'General'},
+  {s:'s/o',l:'Son Of / Suspected Of',c:'General'},
+  {s:'ADR',l:'Adverse Drug Reaction',c:'Pharmacology'},
+  {s:'AUC',l:'Area Under Curve',c:'Pharmacology'},
+  {s:'Cmax',l:'Maximum Concentration',c:'Pharmacology'},
+  {s:'Tmax',l:'Time to Maximum Concentration',c:'Pharmacology'},
+  {s:'t½',l:'Half Life',c:'Pharmacology'},
+  {s:'Vd',l:'Volume of Distribution',c:'Pharmacology'},
+  {s:'PK',l:'Pharmacokinetics',c:'Pharmacology'},
+  {s:'PD',l:'Pharmacodynamics',c:'Pharmacology'},
+  {s:'CI',l:'Contraindication',c:'Pharmacology'},
+  {s:'MOA',l:'Mechanism of Action',c:'Pharmacology'},
+  {s:'SAR',l:'Structure Activity Relationship',c:'Pharmacology'},
+  {s:'GIT',l:'Gastrointestinal Tract',c:'Anatomy'},
+  {s:'CNS',l:'Central Nervous System',c:'Anatomy'},
+  {s:'PNS',l:'Peripheral Nervous System',c:'Anatomy'},
+  {s:'CVS',l:'Cardiovascular System',c:'Anatomy'},
+  {s:'RS',l:'Respiratory System',c:'Anatomy'},
+  {s:'GU',l:'Genitourinary',c:'Anatomy'},
+  {s:'ENT',l:'Ear Nose Throat',c:'Anatomy'},
+  {s:'MSK',l:'Musculoskeletal',c:'Anatomy'},
+  {s:'BP',l:'Blood Pressure',c:'Vitals'},
+  {s:'HR',l:'Heart Rate',c:'Vitals'},
+  {s:'RR',l:'Respiratory Rate',c:'Vitals'},
+  {s:'SpO2',l:'Oxygen Saturation',c:'Vitals'},
+  {s:'BMI',l:'Body Mass Index',c:'Vitals'},
+  {s:'BSA',l:'Body Surface Area',c:'Vitals'},
+  {s:'IBW',l:'Ideal Body Weight',c:'Vitals'},
+  {s:'CBC',l:'Complete Blood Count',c:'Lab'},
+  {s:'LFT',l:'Liver Function Test',c:'Lab'},
+  {s:'KFT',l:'Kidney Function Test',c:'Lab'},
+  {s:'RFT',l:'Renal Function Test',c:'Lab'},
+  {s:'FBS',l:'Fasting Blood Sugar',c:'Lab'},
+  {s:'PPBS',l:'Post Prandial Blood Sugar',c:'Lab'},
+  {s:'Hb',l:'Hemoglobin',c:'Lab'},
+  {s:'WBC',l:'White Blood Cells',c:'Lab'},
+  {s:'RBC',l:'Red Blood Cells',c:'Lab'},
+  {s:'PLT',l:'Platelets',c:'Lab'},
+  {s:'ESR',l:'Erythrocyte Sedimentation Rate',c:'Lab'},
+  {s:'CRP',l:'C-Reactive Protein',c:'Lab'},
+  {s:'INR',l:'International Normalized Ratio',c:'Lab'},
+  {s:'PT',l:'Prothrombin Time',c:'Lab'},
+  {s:'APTT',l:'Activated Partial Thromboplastin Time',c:'Lab'},
+  {s:'mg',l:'Milligram',c:'Units'},
+  {s:'mcg',l:'Microgram (µg)',c:'Units'},
+  {s:'g',l:'Gram',c:'Units'},
+  {s:'kg',l:'Kilogram',c:'Units'},
+  {s:'ml',l:'Milliliter',c:'Units'},
+  {s:'L',l:'Liter',c:'Units'},
+  {s:'mEq',l:'Milliequivalent',c:'Units'},
+  {s:'mmol',l:'Millimole',c:'Units'},
+  {s:'IU',l:'International Unit',c:'Units'},
+  {s:'mOsm',l:'Milliosmole',c:'Units'},
+  {s:'qs',l:'Quantity Sufficient (Quantum Sufficit)',c:'Prescription'},
+  {s:'ad',l:'Up To',c:'Prescription'},
+  {s:'aa',l:'Of Each (Ana)',c:'Prescription'},
+  {s:'dil',l:'Dilute',c:'Prescription'},
+  {s:'sol',l:'Solution',c:'Prescription'},
+  {s:'susp',l:'Suspension',c:'Prescription'},
+  {s:'tab',l:'Tablet',c:'Prescription'},
+  {s:'cap',l:'Capsule',c:'Prescription'},
+  {s:'syr',l:'Syrup',c:'Prescription'},
+  {s:'inj',l:'Injection',c:'Prescription'},
+  {s:'oint',l:'Ointment',c:'Prescription'},
+  {s:'cr',l:'Cream',c:'Prescription'},
+  {s:'gt',l:'Drops (Guttae)',c:'Prescription'},
+  {s:'NaCl',l:'Sodium Chloride (Normal Saline)',c:'Formulation'},
+  {s:'DNS',l:'Dextrose Normal Saline',c:'Formulation'},
+  {s:'RL',l:"Ringer's Lactate",c:'Formulation'},
+  {s:'D5W',l:'5% Dextrose in Water',c:'Formulation'},
+  {s:'NS',l:'Normal Saline (0.9% NaCl)',c:'Formulation'},
+  {s:'IP',l:'Indian Pharmacopoeia',c:'Standards'},
+  {s:'BP',l:'British Pharmacopoeia',c:'Standards'},
+  {s:'USP',l:'United States Pharmacopeia',c:'Standards'},
+  {s:'EP',l:'European Pharmacopoeia',c:'Standards'},
+  {s:'WHO',l:'World Health Organization',c:'Organizations'},
+  {s:'CDSCO',l:'Central Drugs Standard Control Organization',c:'Organizations'},
+  {s:'FSSAI',l:'Food Safety Standards Authority of India',c:'Organizations'},
+];
+
+function searchAbbr(){
+  const q=document.getElementById('abbr-input').value.trim().toLowerCase();
+  const res=document.getElementById('abbr-result');
+  if(!q){ res.classList.remove('show'); res.innerHTML=''; return; }
+  const matches=ABBR_DB.filter(a=>
+    a.s.toLowerCase().includes(q)||
+    a.l.toLowerCase().includes(q)||
+    a.c.toLowerCase().includes(q)
+  ).slice(0,8);
+  if(!matches.length){
+    res.innerHTML=`<div class="abbr-item"><div class="abbr-short">Not found</div><div class="abbr-long">Koi result nahi mila</div></div>`;
+  } else {
+    res.innerHTML=matches.map(a=>`
+      <div class="abbr-item">
+        <div class="abbr-short">${a.s}</div>
+        <div class="abbr-long">${a.l}</div>
+        <div class="abbr-cat">📂 ${a.c}</div>
+      </div>`).join('');
+  }
+  res.classList.add('show');
+}
+
+// ═══ NAVIGATION ═══
+function goTo(page,idx){
+  const url=URLS[page]; if(!url)return;
+  const pt=document.getElementById('ptrans');
+  pt.classList.add('on'); setTimeout(()=>pt.classList.remove('on'),280);
+  loadURL(url); stack.push(url); setNav(idx);
+}
+function setNav(idx){
+  NAVIDS.forEach((id,i)=>document.getElementById(id)?.classList.toggle('active',i===idx));
+  document.getElementById('nav-ind').style.left=(idx*20)+'%';
+}
+function loadURL(url){
+  const f=document.getElementById('webview');
+  f.classList.remove('loaded'); startBar(); f.src=url;
+}
+
+// ═══ PROGRESS ═══
+function startBar(){ const b=document.getElementById('pbar'); b.style.width='0%'; b.classList.add('on'); }
+function doneBar(){ const b=document.getElementById('pbar'); b.classList.remove('on'); b.style.width='100%'; setTimeout(()=>b.style.width='0%',500); }
+
+// ═══ IFRAME ═══
+const iv=document.getElementById('webview');
+iv.addEventListener('load',()=>{
+  doneBar(); document.getElementById('offline').classList.remove('show'); iv.classList.add('loaded');
+  try{
+    const d=iv.contentDocument||iv.contentWindow.document;
+    if(d&&d.head){
+      const s=d.createElement('style');
+      s.textContent=`body{font-size:15px!important;line-height:1.75!important;overflow-x:hidden!important;}img{max-width:100%!important;height:auto!important;}#sidebar-wrapper,.sidebar,#sidebar{display:none!important;}#main-wrapper,.main-wrapper{width:100%!important;max-width:100%!important;float:none!important;}a[href$=".pdf"]{display:inline-flex!important;padding:10px 18px!important;background:linear-gradient(135deg,#0a3d62,#00b894)!important;color:#fff!important;border-radius:10px!important;text-decoration:none!important;font-weight:700!important;}a[href$=".pdf"]::before{content:"📥 ";}`;
+      d.head.appendChild(s);
+      d.addEventListener('click',e=>{
+        const a=e.target.closest('a'); if(!a)return;
+        const href=a.href||'';
+        if(href.startsWith('http')&&!href.includes('ankitstudypoint')&&!href.includes('blogspot')){ e.preventDefault(); window.open(href,'_blank'); }
+        else if(href.includes('ankitstudypoint')||href.includes('blogspot')){ stack.push(href); }
+      });
+    }
+  }catch(_){}
+});
+
+// ═══ REFRESH ═══
+function refreshPage(){ iv.classList.remove('loaded'); startBar(); iv.src=iv.src; toast('🔄 Refreshing...'); }
+
+// ═══ BACK ═══
+history.pushState(null,null,location.href);
+window.addEventListener('popstate',()=>{
+  history.pushState(null,null,location.href);
+  // Close sidebar first if open
+  if(document.getElementById('sidebar').classList.contains('open')){ closeSidebar(); return; }
+  if(stack.length>1){ stack.pop(); const p=stack[stack.length-1]; iv.classList.remove('loaded'); startBar(); iv.src=p; }
+  else { toast('📌 Home page pe hain'); }
+});
+
+// ═══ OFFLINE ═══
+window.addEventListener('offline',()=>{ document.getElementById('offline').classList.add('show'); toast('❌ Internet nahi hai'); });
+window.addEventListener('online',()=>{ document.getElementById('offline').classList.remove('show'); toast('✅ Internet wapas!'); refreshPage(); });
+function retryConn(){ if(navigator.onLine){ document.getElementById('offline').classList.remove('show'); refreshPage(); } else { toast('❌ Abhi bhi nahi hai...'); } }
+
+// ═══ INSTALL ═══
+window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferredPrompt=e; setTimeout(()=>document.getElementById('ibanner').classList.add('show'),4000); });
+function installApp(){ if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(r=>{ if(r.outcome==='accepted')toast('🎉 Install ho rahi hai!'); deferredPrompt=null; closeBanner(); }); } }
+function closeBanner(){ document.getElementById('ibanner').classList.remove('show'); }
+
+// ═══ TOAST ═══
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800); }
+
+// ═══ SERVICE WORKER ═══
+if('serviceWorker' in navigator){ window.addEventListener('load',()=>{ navigator.serviceWorker.register('./service-worker.js').then(()=>console.log('SW ✓')).catch(e=>console.log('SW ✗',e)); }); }
+
+// ═══ NOTIFICATIONS ═══
+setTimeout(async()=>{ if('Notification' in window&&Notification.permission==='default'){ const p=await Notification.requestPermission(); if(p==='granted')toast('🔔 Notifications enabled!'); } },12000);
+
+// ═══ SHORTS ═══
+// Pharmacy / D.Pharma related YouTube Shorts video IDs
+const SHORTS_DATA = [
+  { id: 'KkfRDuvFo0w', channel: '📚 D.Pharma Notes', title: 'Pharmaceutical Chemistry - Important Reactions' },
+  { id: '3WGcg7XnfPs', channel: '💊 Pharmacy Guide', title: 'Drug Classification for D.Pharma Students' },
+  { id: 'vhA6THrMm3s', channel: '🔬 Pharma Study', title: 'Dosage Forms - Tablets, Capsules, Syrups' },
+  { id: 'Yvu1Tq5IQWA', channel: '🩺 Medical Shorts', title: 'Human Anatomy Quick Revision' },
+  { id: 'UzAzpkOJqsQ', channel: '📖 Study Point', title: 'Pharmacology - Drug Mechanism of Action' },
+  { id: '4s-QfEiXZf8', channel: '🎓 Pharmacy Tips', title: 'Government Pharmacist Exam Preparation' },
+  { id: 'CqFMR1M4wqg', channel: '💉 Clinical Pharma', title: 'Prescription Reading Skills' },
+  { id: 'Sk6jLSCKKHo', channel: '🌿 Pharmacognosy', title: 'Important Plant Drugs to Remember' },
+  { id: 'fJJL7-u-HrE', channel: '⚗️ Pharm Chem', title: 'Titration Methods in Pharmaceutics' },
+  { id: 'RPOkDWRj8Qg', channel: '📋 Exam Ready', title: 'D.Pharma 1st Year Important Questions' },
+];
+
+let shortsOpen = false;
+
+function openShorts() {
+  setNav(3);
+  const overlay = document.getElementById('shorts-overlay');
+  overlay.style.display = 'flex';
+  // Force reflow then animate
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      overlay.classList.add('open');
+      overlay.classList.remove('closing');
+    });
+  });
+  shortsOpen = true;
+  buildShortsFeed();
+  toast('🎬 Shorts load ho raha hai...');
+}
+
+function closeShorts() {
+  const overlay = document.getElementById('shorts-overlay');
+  overlay.classList.add('closing');
+  overlay.classList.remove('open');
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    overlay.classList.remove('closing');
+    // Pause all iframes
+    document.querySelectorAll('.short-iframe').forEach(f => { try { f.src = f.src; } catch(e){} });
+  }, 420);
+  shortsOpen = false;
+  setNav(0);
+}
+
+let shortsBuilt = false;
+function buildShortsFeed() {
+  if (shortsBuilt) return;
+  shortsBuilt = true;
+  const feed = document.getElementById('shorts-feed');
+  const loading = document.getElementById('shorts-loading');
+
+  // Remove loading after slight delay
+  setTimeout(() => {
+    if (loading) loading.style.display = 'none';
+    SHORTS_DATA.forEach((s, i) => {
+      const item = document.createElement('div');
+      item.className = 'short-item';
+      item.id = 'short-' + i;
+
+      // YouTube embed — autoplay first, muted, controls hidden for feel
+      const autoplay = i === 0 ? 1 : 0;
+      item.innerHTML = `
+        <iframe class="short-iframe" id="sf-${i}"
+          src="https://www.youtube.com/embed/${s.id}?autoplay=${autoplay}&mute=1&loop=1&playlist=${s.id}&controls=1&modestbranding=1&playsinline=1&rel=0"
+          allow="autoplay; fullscreen; accelerometer; gyroscope"
+          allowfullscreen
+          loading="${i < 2 ? 'eager' : 'lazy'}"
+        ></iframe>
+        <div class="short-info">
+          <div class="short-channel">${s.channel}</div>
+          <div class="short-title">${s.title}</div>
+        </div>
+        <div class="short-actions">
+          <button class="sh-action-btn" onclick="likeShort(${i})">
+            <div class="sh-action-icon" id="like-${i}">❤️</div>
+            <span class="sh-action-label">Like</span>
+          </button>
+          <button class="sh-action-btn" onclick="openYTShort('${s.id}')">
+            <div class="sh-action-icon">▶️</div>
+            <span class="sh-action-label">YouTube</span>
+          </button>
+          <button class="sh-action-btn" onclick="shareShort('${s.id}','${s.title.replace(/'/g,"\\'")}')">
+            <div class="sh-action-icon">🔗</div>
+            <span class="sh-action-label">Share</span>
+          </button>
+        </div>`;
+      feed.appendChild(item);
+    });
+
+    // Auto-pause/play on scroll snap
+    setupShortsScroll(feed);
+  }, 800);
+}
+
+function setupShortsScroll(feed) {
+  let currentIdx = 0;
+  feed.addEventListener('scroll', () => {
+    const idx = Math.round(feed.scrollTop / feed.clientHeight);
+    if (idx !== currentIdx) {
+      currentIdx = idx;
+      // Load next iframe src if lazy
+      const next = document.getElementById('sf-' + (idx + 1));
+      if (next && !next.src.includes('autoplay')) {
+        next.src = next.src.replace('autoplay=0', 'autoplay=0');
+      }
+    }
+  }, { passive: true });
+}
+
+function likeShort(i) {
+  const btn = document.getElementById('like-' + i);
+  if (btn) {
+    btn.style.transform = 'scale(1.4)';
+    btn.textContent = '💖';
+    setTimeout(() => { btn.style.transform = 'scale(1)'; }, 300);
+    toast('❤️ Liked!');
+  }
+}
+
+function openYTShort(id) {
+  window.open('https://www.youtube.com/shorts/' + id, '_blank');
+}
+
+function shareShort(id, title) {
+  const url = 'https://www.youtube.com/shorts/' + id;
+  if (navigator.share) {
+    navigator.share({ title: title, url: url });
+  } else {
+    navigator.clipboard?.writeText(url).then(() => toast('🔗 Link copy ho gaya!')).catch(() => toast('URL: ' + url));
+  }
+}
+
+// Back button support for shorts
+const _origPopstate = window.onpopstate;
+window.addEventListener('popstate', () => {
+  if (shortsOpen) { closeShorts(); return; }
+});
+
+</script>
+</body>
+</html>
